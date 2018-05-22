@@ -1,0 +1,178 @@
+﻿生成启动时间为 2018/5/8 18:04:49。
+     1>项目“E:\编程\资料\书\cs\编译原理\buildTable\buildTable\buildTable.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         E:\编程\VisualStudio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt "源.cpp"
+         源.cpp
+     1>e:\编程\visualstudio\vc\include\xtree(1683): warning C4503: “__LINE__Var”: 超出修饰名的长度，名称被截断
+         e:\编程\visualstudio\vc\include\xtree(1121): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_hint<std::pair<const _Kty,_Ty>&,std::_Tree_node<std::pair<const _Kty,_Ty>,void *>*>(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *
+                 ]
+         e:\编程\visualstudio\vc\include\xtree(1121): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_hint<std::pair<const _Kty,_Ty>&,std::_Tree_node<std::pair<const _Kty,_Ty>,void *>*>(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *
+                 ]
+         e:\编程\visualstudio\vc\include\map(348): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::emplace_hint<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>
+                 ]
+         e:\编程\visualstudio\vc\include\map(348): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::emplace_hint<const std::piecewise_construct_t&,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &>,std::tuple<>>(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,const std::piecewise_construct_t &,std::tuple<const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &> &&,std::tuple<> &&)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>
+                 ]
+         e:\编程\visualstudio\vc\include\map(340): note: 编译类 模板 成员函数“std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<_Kty>>>,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> &std::map<_Kty,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::less<_Kty>,std::allocator<std::pair<const _Kty,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>>>::operator [](const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &)”时
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>
+                 ]
+         e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(440): note: 参见对正在编译的函数 模板 实例化“std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<_Kty>>>,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>> &std::map<_Kty,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::less<_Kty>,std::allocator<std::pair<const _Kty,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>>>::operator [](const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>
+                 ]
+         e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(22): note: 参见对正在编译的类 模板 实例化“std::map<std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<_Kty>>>,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>,std::less<_Kty>,std::allocator<std::pair<const _Kty,std::map<_Kty,_Ty,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>>>>”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>
+                 ]
+     1>e:\编程\visualstudio\vc\include\xtree(1855): warning C4503: “__LINE__Var”: 超出修饰名的长度，名称被截断
+         e:\编程\visualstudio\vc\include\xtree(1696): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_at<std::pair<const _Kty,_Ty>&,_Nodety>(bool,std::_Tree_node<std::pair<const _Kty,_Ty>,void *> *,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &
+                 ]
+         e:\编程\visualstudio\vc\include\xtree(1696): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_at<std::pair<const _Kty,_Ty>&,_Nodety>(bool,std::_Tree_node<std::pair<const _Kty,_Ty>,void *> *,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &
+                 ]
+         e:\编程\visualstudio\vc\include\xtree(1121): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_hint<std::pair<const _Kty,_Ty>&,std::_Tree_node<std::pair<const _Kty,_Ty>,void *>*>(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *
+                 ]
+         e:\编程\visualstudio\vc\include\xtree(1121): note: 参见对正在编译的函数 模板 实例化“std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_hint<std::pair<const _Kty,_Ty>&,std::_Tree_node<std::pair<const _Kty,_Ty>,void *>*>(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *
+                 ]
+     1>e:\编程\visualstudio\vc\include\xtree(1799): warning C4503: “__LINE__Var”: 超出修饰名的长度，名称被截断
+         e:\编程\visualstudio\vc\include\xtree(1792): note: 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_nohint<std::pair<const _Kty,_Ty>&,_Nodety>(bool,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &
+                 ]
+         e:\编程\visualstudio\vc\include\xtree(1792): note: 参见对正在编译的函数 模板 实例化“std::pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const _Kty,_Ty>>>>,bool> std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_nohint<std::pair<const _Kty,_Ty>&,_Nodety>(bool,_Valty,_Nodety)”的引用
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>,
+                     _Nodety=std::_Tree_node<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>,void *> *,
+                     _Valty=std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>> &
+                 ]
+     1>e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(473): warning C4503: “std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_hint”: 超出修饰名的长度，名称被截断
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>
+                 ]
+     1>e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(473): warning C4503: “std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_hint”: 超出修饰名的长度，名称被截断
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>>>>>>
+                 ]
+     1>e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(473): warning C4503: “std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_at”: 超出修饰名的长度，名称被截断
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>
+                 ]
+     1>e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(473): warning C4503: “std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_nohint”: 超出修饰名的长度，名称被截断
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::pair<std::string,std::vector<std::string,std::allocator<std::string>>>>>>>>
+                 ]
+     1>e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(473): warning C4503: “std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_at”: 超出修饰名的长度，名称被截断
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>>>>>>
+                 ]
+     1>e:\编程\资料\书\cs\编译原理\buildtable\buildtable\源.cpp(473): warning C4503: “std::_Tree<std::_Tmap_traits<_Kty,_Ty,_Pr,_Alloc,false>>::_Insert_nohint”: 超出修饰名的长度，名称被截断
+                 with
+                 [
+                     _Kty=std::string,
+                     _Ty=std::map<std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>>>>,
+                     _Pr=std::less<std::string>,
+                     _Alloc=std::allocator<std::pair<const std::string,std::map<std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>,std::less<std::string>,std::allocator<std::pair<const std::string,std::set<std::string,std::less<std::string>,std::allocator<std::string>>>>>>>
+                 ]
+       Link:
+         E:\编程\VisualStudio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\编程\资料\书\cs\编译原理\buildTable\Debug\buildTable.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\编程\资料\书\cs\编译原理\buildTable\Debug\buildTable.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\编程\资料\书\cs\编译原理\buildTable\Debug\buildTable.lib" /MACHINE:X86 "Debug\源.obj"
+         buildTable.vcxproj -> E:\编程\资料\书\cs\编译原理\buildTable\Debug\buildTable.exe
+     1>已完成生成项目“E:\编程\资料\书\cs\编译原理\buildTable\buildTable\buildTable.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:06.11

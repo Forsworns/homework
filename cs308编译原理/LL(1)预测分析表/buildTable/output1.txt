@@ -1,0 +1,13 @@
+E (   E->TE'
+E id   E->TE'
+E' $   E'->@
+E' )   E'->@
+E' +   E'->+TE'
+F (   F->(E)
+F id   F->id
+T (   T->FT'
+T id   T->FT'
+T' $   T'->@
+T' )   T'->@
+T' *   T'->*FT'
+T' +   T'->@
