@@ -1,0 +1,49 @@
+//server
+有多个客户端处于等待状态时，若服务器空闲，哪个客户端先请求加密服务会优先被服务
+Client 4 connected!
+Have read from client 4!Encoding...
+Write back to client 4!
+Client 5 connected!
+Have read from client 5!Encoding...
+Write back to client 5!
+Client 6 connected!
+Have read from client 6!But he has to wait!
+Reply to client 6!
+Have read from client 5!Encoding...
+Write back to client 5!
+in client4,size is 1 and front is 5
+Client 4 log out!
+Have read from client 6!Encoding...
+Write back to client 6!
+Client 6 log out!
+in client5,size is 0 and front is 6
+Client 5 log out!
+
+//client按启动次序排列
+//client
+Connected!Please enter the message:
+Are you OK??
+From server: Duh brx RN??
+Please enter the message:
+:q
+
+//client
+Connected!Please enter the message:
+Hello!23333
+From server: Khoor!23333
+Please enter the message:
+nihao
+From server: qlkdr
+Please enter the message:
+:q
+
+//client
+Connected!Please enter the message:
+something secret
+From server: wait please...
+Please enter the message:
+something secret
+From server: vrphwklqj vhfuhw
+Please enter the message:
+:q
+

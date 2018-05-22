@@ -1,0 +1,1 @@
+cmd_/home/forsworn/Desktop/os/hello_module/hello/hello.ko := arm-linux-androideabi-ld -r  -T /kernel/kernel/goldfish/scripts/module-common.lds --build-id  -o /home/forsworn/Desktop/os/hello_module/hello/hello.ko /home/forsworn/Desktop/os/hello_module/hello/hello.o /home/forsworn/Desktop/os/hello_module/hello/hello.mod.o
