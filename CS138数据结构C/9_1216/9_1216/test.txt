@@ -1,0 +1,11 @@
+10
+insert 5
+insert 6
+insert 7
+insert 8
+find 5
+find 6
+decrease 1 3
+decrease 2 5
+decrease 3 5
+find 1

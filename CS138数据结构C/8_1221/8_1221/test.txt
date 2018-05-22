@@ -1,0 +1,25 @@
+22
+insert 42
+insert 42
+insert 43
+find 42
+find 44
+find_ith 2
+find_ith 4
+delete 42
+delete_greater_than 42
+find_ith 1
+insert 1
+insert 2
+insert 3
+insert 4
+insert 5
+delete_less_than 1
+delete_interval 3 5
+find_ith 2
+find_ith 4
+find 1
+find 2
+find 3
+find 4
+find 5

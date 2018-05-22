@@ -1,0 +1,18 @@
+17
+insert 6
+insert 5
+insert 2
+insert 2
+insert 2
+insert 6
+insert 4
+delete
+min
+delete
+min
+delete
+min
+delete
+insert 9
+insert 3
+min

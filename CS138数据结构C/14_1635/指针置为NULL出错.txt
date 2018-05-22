@@ -1,0 +1,61 @@
+#includeiostream
+#pragma warning (disable4996)
+using namespace std;
+int cityNum, roadNum,answer;
+const int noRoad = 100000000;
+int dist[1000002];维护到某个城市的最短距离
+bool known[1000002];是否到访过该点
+struct road {
+	int endCityOrder;
+	int length;
+	road next;
+	road(int ci,int le,road ne=NULL)endCityOrder(ci),length(le),next(ne) {}
+	road()endCityOrder(0),length(noRoad),next(NULL){}
+};
+road cityList;
+void addTheRoad(int startCity,int endCity,int roadLength) {
+	cityList[startCity] = new road(endCity,roadLength,cityList[startCity]);无向图须保存两个
+	cityList[endCity] = new road(startCity, roadLength, cityList[endCity]);
+}
+void dijkstra(int cityNums) {这里默认从1号城市开始
+	road p;
+	int min;最短长度
+	int temp;
+	for (int i = 1; i = cityNums;++i) {
+		dist[i] = noRoad;这个长度表示不存在路径
+		known[i] = false;还未经过
+	}
+	dist[1] = 0;这里由于已知1号城市为起点，是对1号城市的初始化
+	for (int i = 2; i = cityNums;++i) {
+		min = noRoad;
+		for (int j = 1; j = cityNums;++j) {
+			if (!known[j]&&dist[j]min) {寻找具有最短距离的结点
+				min = dist[j];
+				temp = j;
+			}
+		}
+		known[temp] = true;
+		for (p = cityList[temp]; p-next!=NULL;p=p-next) {更新temp邻接点的距离为什么这里不能用NULL判断？？
+			if (!known[p-endCityOrder]&&dist[p-endCityOrder]min+p-length) {
+				dist[p-endCityOrder] = min + p-length;
+			}
+		}
+	}
+	answer = dist[cityNums];
+}
+ 
+int main() {
+	freopen(test.txt,r,stdin);
+	iossync_with_stdio(false);
+	stdcin.tie(0);
+	cin  cityNum  roadNum;
+	cityList = new road[cityNum+1];
+	int startCity, endCity, roadLength;
+	for (int i = 0; i  roadNum;++i) {
+		cin  startCity  endCity  roadLength;
+		addTheRoad(startCity, endCity, roadLength);
+	}
+	dijkstra(cityNum);
+	cout  answer;
+	return 0;
+}

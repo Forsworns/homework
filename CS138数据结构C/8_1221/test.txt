@@ -1,0 +1,9 @@
+删除函数举例：void makeEmpty(BinaryNode * &t)             //递归清空子树
+{
+    if (t != NULL)
+    {
+        makeEmpty(t->left);
+        makeEmpty(t->right);
+        delete t;
+    }
+}

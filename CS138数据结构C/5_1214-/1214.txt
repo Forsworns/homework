@@ -1,0 +1,111 @@
+#include<iostream> //他这个是只有结点，我的树类是不是多余了，把问题搞复杂了
+using namespace std;
+
+
+class tree{
+public:
+    
+    int data;
+    tree *left;
+    tree *brother;
+    tree *parent;
+
+        tree() :left(0), brother(0),parent(0) {}
+    
+};
+
+
+void preOrder(tree *root)
+{
+    if (root != 0)
+    {
+        cout << root->data<<' ';
+        preOrder(root->left);
+        preOrder(root->brother);
+    }
+}
+
+void postOrder(tree *root)
+{
+    if (root != 0)
+    {
+        
+        postOrder(root->left);
+        cout << root->data<<' ';
+        postOrder(root->brother);
+    }
+}
+
+
+void travel(tree *&t){
+    tree * p[100000];
+    p[0] = t;
+    
+    int front = 0;
+    int rear= 0;
+    
+    while (rear >= front) {
+        
+        cout << p[front]->data << ' ';
+        
+        if (p[front] -> left != NULL) {
+            p[rear + 1] = p[front] -> left;
+            rear++;
+        }
+        
+        if (p[front] -> brother != NULL) {
+            p[front] = p[front] -> brother;
+            front--;
+        }
+        front++;
+    }
+    
+    
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    
+    int lt, br, vi;
+    
+    tree *node = new tree[n + 1];
+    
+    for (int i = 1;i<n + 1;i++)
+    {
+        cin >> lt >> br>>vi;
+        
+        node[i].data = vi;
+        
+        if (lt != 0)
+        {
+            node[i].left = &node[lt];
+            node[lt].parent = &node[i];
+        }
+        
+        if (br != 0)
+        {
+            node[i].brother = &node[br];
+            node[br].parent = &node[i];
+        }
+    }
+    
+    tree *root = 0;
+    
+    int i = 1;
+    while (node[i].parent != 0)
+        ++i;
+    
+    root = &node[i];
+    
+    preOrder(root);
+    cout <<endl;
+    postOrder(root);
+    cout <<endl;
+    //levelTraverse(root);
+    travel(root);
+    cout <<endl;
+
+    return 0;
+}

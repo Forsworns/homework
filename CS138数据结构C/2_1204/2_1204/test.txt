@@ -1,0 +1,27 @@
+Hello everyone.
+I hope you can have a good time during our Data Structure Class.
+Enjoy typing .
+dddddddddddddddddddddd
+dd dddddd dddddddddddddddddddddd
+dd
+ddd
+d
+dddd ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+d
+******
+list 1 1
+ins 1 154 s
+ins 4 1 s
+ins 2 73 9
+del -1 1 2
+ins 3 14 by yourself
+list 2 3
+del 8 1 3
+del -1 5 6
+del f 135
+list 5 -6
+list 50 2
+list 5 555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
+ins -2 6 sdfdsf
+ins 2 6 test
+quit

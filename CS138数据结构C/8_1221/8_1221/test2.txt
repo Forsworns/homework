@@ -1,0 +1,9 @@
+8
+insert 5
+insert 2
+insert 3
+insert 4
+insert 7
+insert 7
+find_ith 5
+find_ith 6
