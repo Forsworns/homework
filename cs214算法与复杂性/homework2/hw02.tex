@@ -1,0 +1,188 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework02}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item 求解递推关系式$T(n)=n+\sum_{i=1}^{n-1} T(i)$，其中$T(1)=1$.
+
+\begin{solution}
+{\setlength\abovedisplayskip{0.7pt}
+\setlength\belowdisplayskip{0.7pt}
+$$T(n)=n+\sum_{i=1}^{n-1} T(i)$$}
+{\setlength\abovedisplayskip{0.7pt}
+\setlength\belowdisplayskip{0.7pt}
+$$T(n-1)=n-1+\sum_{i=1}^{n-2} T(i)$$}
+{\setlength\abovedisplayskip{0.7pt}
+\setlength\belowdisplayskip{0.7pt}
+$$T(n)=1+2T(i)$$}
+{\setlength\abovedisplayskip{0.7pt}
+\setlength\belowdisplayskip{0.7pt}
+$$T(n)+1=2(T(n)+1)$$}
+{\setlength\abovedisplayskip{0.7pt}
+\setlength\belowdisplayskip{0.7pt}
+$$T(n)=2^{n}-1$$}
+\end{solution}
+
+\item 在寻找一对一映射问题中，算法结束时集合S是否可能为空集？请证明你的结论。
+
+\begin{proof}
+在寻找一对一映射问题中，算法结束时集合S不可能为空集。
+
+显然，如果出现环形的映射关系，则由于环内元素一一对应且映射关系闭合，组成环的元素均不可能被删除。
+
+由题意，$a_1$必须映射到一个元素，且不可能是$a_1$自身否则无法被删除。那么假设集合中的元素$a_1$映射到了$a_2$，则$a_2$在$a_1$被删除前不会被删除。设$a_2$映射到了$a_3$(若$a2$映射到$a_1$或$a_2$，则同样不可能被删除掉)，则$a_3$在$a_2$被删除前不会被删除。类似地重复该操作，可以找到一条映射关系组成的链条。但是由于集合内元素有限，该操作不可能无限进行下去。即必然会存在$a_j$会映射到之前的元素$a_i$, $i\in \{1,\ldots,j\}$。那么$a_i$到$a_j$形成了环形的映射关系，这些元素是不可能被删除的。
+\end{proof}
+
+\item 课上的最大连续子序列是指和最大，如果要求是积最大呢？设空序列的积为1，只需求出最大值即可，不需要知道是哪个序列
+
+\begin{solution}
+	首先定义max()返回括号内各个参数的最大值，min()返回括号内各个参数的最小值。
+	
+	如果是求积最大，设$a_i$为序列的第$i$个元素。设$max_{i}$为长度为$i$的最大连续子序列积,$min_{i}$为长度为$i$的最小连续子序列积，$tailmin_{i}$为长度为$i$的序列尾部最小连续子序列积，$tailmax_{i}$为长度为$i$的序列尾部的最大连续子序列积。
+
+	首先考虑最基础的情况，当序列长度为1时，$max_{1}=max(a_1,1)，min_1=min(a_1,1)$。
+	
+	如果已知长度为$k$的序列的$max_{k}，tail_{k}$，那么对于长度为$(n+1)$的序列：
+	
+	如果$max_k$和$min_k$的序列最后一项均为$a_k$，只需判断是否需要接上$a_{k+1}$，则$$max_{k+1}=max(max_k,max_{k}*a_{k+1}）,min_{k}*a_{k+1})$$ $$min_{k+1}=min(min_k,max_{k}*a_{k+1},min_{k}*a_{k+1})$$
+	
+	如果$max_k$和$min_k$的序列最后一项均不为$a_k$，则$$tailmax_{k+1}=max(1,a_{k+1},tailmax_k*a_{k+1},tailmin_{k}*a_{k+1})$$ $$tailmin_{k+1}=min(1,a_{k+1},tailmax_{k}*a_{k+1},tailmin_{k}*a_{k+1})$$ $$max_{k+1}=max(max_k,tailmax_{k+1})$$ $$min_{k+1}=min(min_k,tailmin_{k+1})$$
+	
+	如果$max_k$和$min_k$中一个最后一项均不为$a_k$，仿照上面的两种情况可以得出递推关系，这里不再赘述。
+	
+	由归纳基础及递推关系可知最大子序列之积。
+\end{solution}
+
+\item 背包问题中如果各种大小的物品的数量不限，那么如何知道背包是否能够恰好放满？
+
+\begin{solution}
+	记背包容量为$vmax$，$n$种物品的大小从小到大排序分别为$w_i,i\in\{1,\ldots,n\}$，构成集合$Weights$。包内空间占用为$v[i],i\in\{1,\ldots,vmax\}$，如果可能出现这种情况则置为1，不可能存在这种情况置为0。
+	
+	首先，对$\forall i\in \{1,\ldots\,n\},v[w_i]=1$，之后伪代码为：
+	\begin{lstlisting}
+	for(size in (w_1, ..., vmax)) {
+	//对每个容量都要考察
+		if(v[size]) continue; 
+		else {
+			for(j in Weights){
+			//检查到某物品使该情况可能发生
+			if((size-j) > 0){
+			//最初可能考察的容量比较小
+				v[size] = v[size-j];
+				if(v[size]) break;
+				//某容量可行，不必循环
+			} 
+			else break;
+			}
+		}
+	}
+	\end{lstlisting}
+	最后检查v[m]是否为1，即可知晓是否可以塞满背包。
+\end{solution}
+
+\item 写出轮廓问题的伪代码
+
+\begin{solution}
+	设含有n个元素的数组buidings表示n个建筑的轮廓线，为全局变量
+	\begin{algorithm}
+		\caption{divideBuildings(startIndex,endIndex)}
+		\KwIn{轮廓线序号起点startIndex，终点endIndex}
+		\KwResult{合并后的轮廓线outline}
+		\eIf{startIndex==endIndex}{
+			return buildings[startIndex];
+		}{}
+		\eIf{startIndex==endIndex-1}{
+			return merge(building[startIndex], building[endIndex]);
+		}
+		{
+			midIndex = startIndex + endIndex;
+			outline1 = divideBuildings(startIndex, midIndex);
+			outline2 = divideBuildings(midIndex+1, endIndex);
+			return merge(outline1, outline2);
+		}
+	\end{algorithm}
+	\begin{algorithm}
+		\SetAlgoLined
+		\caption{merge(outline1,outline2)}
+		\KwIn{两个轮廓线outline1,outline2}
+		\KwOut{合并后的轮廓线outline}
+		$i = 0, j = 0, k = 0$;
+		outline[];
+		\While{$i<size(outline1)$ \textbf{and} $j<size(outline2)$}{
+			\eIf{$outline1[i]<ouline2[j]$}{
+				$outline[k] = outline1[i]$;
+				$k = k + 1$;
+				$outline[k] = max(outline1[i+1],outline2[j+1])$;	
+				$i = i+2$;
+			}{
+				$outline[k] = outline2[j]$;
+				$k = k + 1$;
+				$outline[k] = max(outline1[i+1],outline2[j+1])$;
+				$j = j+2$;
+			}
+		}
+		\While{$i<size(outline1)$}{将outline1的剩余部分赋值给outline;}
+		\While{$j<size(outline2)$}{将outline2的剩余部分赋值给outline;}
+		return outline;
+	\end{algorithm}
+\end{solution}
+
+
+\end{enumerate}
+
+%========================================================================
+\end{document}

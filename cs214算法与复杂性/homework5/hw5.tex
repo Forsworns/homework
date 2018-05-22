@@ -1,0 +1,95 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework05}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item 1 给定测度空间中位于同一平面的$n$个点，已知任意两点之间的距离$d_{ij}$，存储在矩阵$D$中，最大的$d_{ij}$被称为图的直径。
+该问题的直观解法就是把$D$扫描一遍，选择其中最大的元素即可。由于是在一个测度空间中，因此dij满足距离的基本要求，即非负性、对称性和三角不等式，我们就可以给出一种时间亚线性的近似算法。算法很简单，由原来确定性算法的检查整个矩阵改为只随机检查$D$的某一行，这样时间复杂性就由原来的$\mathcal{O}(n^2)$减少为$\mathcal{O}(n)$，相对于输入规模$n^2$而言，这是一个时间亚线性的算法。那么时间代价减小的同时，证明解不会小于最优值的一半
+
+\begin{proof}
+	由于我们从图中一点出发，遍历了与其它（n-1）个点的距离，不妨以矩阵$D$的第一行为例。那么无非会有以下两种情况：
+	\begin{enumerate}
+		\item 直径在$d_{12},d_{13},\ldots,d_{1n}$中，那么遍历该行，显然找到了最优解。
+		\item 直径不在该行，首先我们知道该距离具有对称性$d_{1i}=d_{i1}$。那么对于该行任意两个元素$d_{1i}$和$d_{1j}$，点i和点j间的距离为$d_{ij}$，就覆盖了第一行外所有的点间的距离。又因为在同一测度空间，由三角不等式，有$d_{1i}+d_{1j}>d_{ij}$，所以$d_{1i}$和$d_{1j}$不可能均小于$d_{ij}/2$。由$i$、$j$的任意性，我们知$d_{1i}$中的最大值不可能小于最优值的一半。
+	\end{enumerate}
+	综上所述，解不会小于最优值的一半。
+\end{proof}
+
+\item $G=(V,E)$是一个无向图，每个顶点的度数都为偶数，设计线性时间算法，给$G$中每条边一个方向，使每个顶点的入度等于出度。（请先简单说明算法思想，再给出伪代码，然后证明其时间复杂性符合要求）
+
+\begin{solution}
+	由于该图的连通性并不影响度数的性质，可以当做多个相同性质的无向图处理。所以下面只讨论该图为连通图的情况。那么由于无向图$G$中每个顶点的度数均为偶数，该图存在欧拉回路。
+	那么接下来可以任意取一点，开始遍历经过该点的欧拉回路，遍历过程中，经过回路的方向就是每条边的方向，直到我们遍历完图G所有的边，时间复杂度为$m\mathcal{O}(|E|)$。
+	所以问题就转化成了如何找到欧拉回路：
+	\begin{algorithm}
+		\caption{euler(vertex)}
+		\KwIn{当前点vertex}
+		\KwOut{欧拉回路标记}
+		\For{neighbor in vertex的所有邻接点}{
+			\If{该边(vertex,neighbor)未被标记过}{
+				标记该边方向;\\
+				euler(neighbor);
+			}
+		}
+	\end{algorithm}
+	该求解欧拉回路的算法的时间复杂度为$m\mathcal{O}(|E|)$。因为对于每个端点，都会遍历它相关联的边，基本语句为条件判断部分，那么会判断$2|E|$次。事实上在构造欧拉回路的过程中，在标记边的时候，就确定了题目中要求的各边方向。
+\end{solution}
+
+\end{enumerate}
+
+%========================================================================
+\end{document}

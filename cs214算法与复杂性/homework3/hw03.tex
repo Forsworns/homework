@@ -1,0 +1,356 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\renewcommand{\algorithmcfname}{算法}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+\lstset{
+	tabsize=2 % sets default tabsize to 2 spaces
+}
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework03}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item 设计算法将1到n2按顺时针方向由内而外填入一个$n \times n$的矩阵
+\begin{gather*}
+	\begin{bmatrix}
+	25 & 10 & 11 & 12 & 13\\
+	24 & 9 & 2 & 3 & 14\\
+	23 & 8 & 1 & 4 & 15\\
+	22 & 7 & 6 & 5 & 16\\
+	21 & 20 & 19 & 18 & 17\\
+	\end{bmatrix}\quad
+\end{gather*}
+\begin{solution}
+	注意到$n$为奇数时，想填满一圈可以从左上角开始逆时针依次递减；而$n$为偶数时，一圈总是从右下角开始逆时针依次递减。因此可以写出以下伪代码：
+	\begin{lstlisting}
+		void solve(int n){
+			initialize the martix m with the input numeral n;
+			if(n % 2) fill_odd(n,0);
+			else fill_even(n,n-1);
+		}
+		void fill_odd(int n, int k){
+		//n是递归输入的规模，k是初始的填入位置(k,k)
+			if(n == 1) {
+				a[k][k] = 1;
+			} else {
+				for(int i=0; i<n; ++i) a[k+i][k]=n*n-i;
+				for(int i=0; i<n; ++i) a[k+n-1][k+i]=n*n-n-i+1;
+				for(int i=0; i<n; ++i) a[k+n-1-i][k+n-1]=n*n-2n-i+2;
+				for(int i=0; i<n; ++i) a[k][k+n-1-i]=n*n-3n-i+3;
+				fill(n-2,k+1);
+			}
+		}
+		void fill_even(int n, int k){
+			if(n == 2){
+				a[k][k] = 4;
+				a[k-1][k] = 3;
+				a[k-1][k-1] = 2;
+				a[k][k-1] = 1;
+			} else {
+				类似地填满一圈
+				fill(n-2,k-1);
+			}
+		}
+	\end{lstlisting}
+\end{solution}
+
+
+\item 给定集合S和实数x，判断x是否能够表示成S中两个不同元素之和，给出算法及时间复杂性（越快越好）。
+
+\begin{solution}
+如果集合中元素已经经过排序，首先通过二分法在集合$S$中寻找两个分界点$x/2$、$x$，或其附近的最小闭区间的端点，这里时间复杂度为$O(nlogn)$。由于要在集合中寻找两数使其和为$x$，则集合中大于$x$的部分可以完全舍去，不再讨论。
+
+将$S$中小于$x$的部分由$x/2$分界点拆分为两个单调递增的有序序列，$A=(S_1,S_2,\ldots,S_{k1})$，$B=(S_{K1+1},\ldots,S_{k2})$，这里的$k2 \leq n$，$S_{k1} \leq x/2$，$S_{k1+1} \geq x/2$，$S_{k2} \leq x$。之后运行如下算法：
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\caption{$find\_elements(A,B)$}
+	\KwIn{序列$A$,$B$}
+	\KwOut{布尔值，判断x是否能够表示成S中两个不同元素之和}
+	\eIf{$sizeof(A)<sizeof(B)$}{
+		\While{$i<sizeof(A)$}{
+			$result \leftarrow binary\_search(B,x-A_i)$;		
+		}
+	}{
+		\While{$i<sizeof(A)$}{
+			$result \leftarrow binary\_search(A,x-B_i)$;		
+		}
+	\textbf{return} $result$;
+	}
+\end{algorithm}
+
+\textbf{复杂度分析：}在$A$、$B$中长度较小的一个进行遍历，在另一个当中使用二分法对应寻找遍历到的元素与x的差。遍历的过程为$\mathcal{O}(n)$，二分法查找为$\mathcal{O}(\log n)$，故该部分的复杂度为$\mathcal{O}(n\log n)$。算法总的时间复杂度为$\mathcal{O}(n\log n)$。
+
+若尚未经过排序，则须增加一步排序，使用快速排序或归并排序的时间复杂度为$O(nlogn)$，总的时间复杂度不变。
+\end{solution}
+
+
+\item 给定整数数组$A[1,\leq ,n]$，相邻两个元素的值最多相差1。设$A[1]=x$，$A[n]=y$，并且$x<y$，输入$z$，$x \leq z \leq y$，判断$z$在数组$A$中出现的位置。给出算法及时间复杂性（不得穷举）
+
+\begin{solution}
+看错了，当成是递增序列且要找到所有位置：
+
+因为$A[1]=x$,$A[n]=y$且$\forall i \in {1,\ldots,n} A[i+1]-A[n]\leq 1$，所以$\forall z$，$x\leq z\leq y$，$z\in A$。但是可能存在多个$z$在数组$A$中。定义一个加法$a\leq b$，$b\leq c$，$(a,b)+(b,c)=(a,c)$，$(null,null)+(b,c)=(b,c)$。
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\caption{$binary_search(start,end)$}
+	\KwIn{搜索的开始下标start，搜索的结束下标end，全局变量数组A,搜索目标z}
+	\KwOut{(start,end)}
+	\eIf{$start<end$}{
+		$mid=(start+end)/2$;
+		
+		\If{$z<A[mid]$}{
+			\textbf{return} $binary\_search(start,mid)$;
+		}
+		\ElseIf{$z>A[mid]$}{
+			\textbf{return} $binary\_search(mid,end)$
+		}
+		\Else{
+			\textbf{return} $binary\_search(start,mid)+binary\_search(mid+1,end)$;
+		}	
+	}{
+		\eIf{$z=A[start]$}{
+			\textbf{return} $(start, end)$;
+		}{
+			\textbf{return} $(null, null)$;
+		}
+	}
+\end{algorithm}
+
+即如果数组某区间正中间的值与$z$相等，则左右两侧均需要搜索。
+
+\textbf{复杂度分析：}定义的求和操作在常数时间内可以完成。总体上，算法在最差的情况下，即如果$A$中有$n-1$个x，搜索$x$，则需要搜索$n-1$次。复杂度为$\mathcal{O}(n)$。最好情况下，如果每次均可以均分区间，那么算法和一般的二分搜索相同，算法复杂度为$\mathcal{O}(\log n)$。
+\end{solution}
+
+\begin{solution}
+微信群里说明是任意序列，并且只需要找到一个，这种情况下类似上面所述，$z$是一定可以被找到的，并且事实上第一个元素完全可以由二分法查找找到。
+	
+证明：由于相邻数字最多相差1，所以可以认为在整数域上序列是连续的。则任意一个区间，如果$left<z<right$，那么在区间$(left,right)$间，至少存在一个等于$z$的值。于是可以得出二分法查找依然有效。
+
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\caption{$binary\_search(start,end)$}
+		\KwIn{搜索的开始下标start，搜索的结束下标end，全局变量数组A,搜索目标z}
+		\KwOut{(start,end)}
+		\eIf{$start<end$}{
+			$mid=(start+end)/2$;\\
+			\eIf{$z<A[mid]$}{
+			\textbf{return} $binary\_search(start,mid)$;	
+			}{
+			\textbf{return} $binary\_search(mid+1,end)$;
+			}
+		}{\textbf{return} $start$;}
+		
+	\end{algorithm}
+	
+	\textbf{复杂度分析：}二分法查找的复杂度为$\mathcal{O}(\log n)$。
+\end{solution}
+
+\item 用分治法找到数组中的最大数和最小数，若数组规模为2的幂，证明需要的比较次数为$3n/2-2$。
+
+\begin{solution}
+	每次将数组分划成两部分，直到只剩两个元素可以直接比较得到最大最小值。
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\caption{$min\_max(start,end)$}
+		\KwIn{数组A，开始下标start，结束下标end}
+		\KwOut{(min,max)}
+		\If{$start==end$}{
+			\textbf{return} $(A[start],A[start])$;
+		}
+		\ElseIf{$start==end+1$}{
+			\eIf{$A[start]<A[end]$}{
+				\textbf{return} $(A[start],A[end])$; 
+			}{
+				\textbf{return} $(A[end],A[start])$;
+			}
+		}\Else{
+			$mid=(start+end)/2$;\\
+			$(min1,max1)=min\_max(start,mid)$;\\
+			$(min2,max2)=min\_max(mid,end)$;\\
+			\eIf{$min1<min2$}{$min=min1$;}{$min=min2$};
+			\eIf{$max1<max2$}{$max=max1$;}{$max=max2$};
+			\textbf{return} $(min,max)$;
+		}
+	\end{algorithm}
+
+	\textbf{复杂度分析：}若数组规模为2的幂，则每次对半划分数组，恰好可以得到两个规模为2的幂的数组，最后求得上述算法比较的次数为$2n-2$。
+	
+	如果采用尾递归的方式，若数组规模为2的幂，首先对两个元素的形式通过一次比较可以得到最大值最小值。若已知$k-2$个元素的最大值和最小值，那么对$k$个元素，可以先比较后两个元素，是一次比较，然后两数中的最大值最小值再分别和前$k-2$个元素的最大值最小值比较，又是两次，于是递推公式为$f(k)=f(k-2)+3$。于是数组规模为2的幂次时，比较次数为$f(2^k)=f(2)+3\times(2^{k-1}-1) (n=2^k)$。所以比较次数为$f(n)=3n/2-2$。
+\end{solution}
+
+\item 给定长度为$n$的字符串$S$，求$S$中最长回文字符串的长度，例如abcdefedchijip中最长的回文字符串为cdefedc，长度为$7$
+
+\begin{solution}
+	动态规划的思想，$dp[i][j]$表示$i$到$j(i\leq j)$的子串为回文字符串，则状态转移方程为$$dp[i][j]=\left\{
+	\begin{array}{ll}
+	true&{i=j}\\
+	S[i]=S[j]&{i=j-1}\\
+	dp[i][j]\text{ and }S[i+1]=S[j-1]&{i<j-1}
+	\end{array}
+	\right\}$$
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\caption{$palindromic()$}
+		\KwIn{输入字符串$S$}
+		\KwOut{回文字符串长度$ans$}
+		\For{$i=n \to 1$}{
+			\For{$j=n \to i$}{
+				\If{$i=j$}{
+					$dp[i][j]=1$;		
+				}
+				\ElseIf{$i=j-1$}{
+					$dp[i][j]=(S[i]==S[j])$;
+				}
+				\Else{
+					$dp[i][j]=dp[i][j]\text{ and }S[i+1]=S[j-1]$;
+				}
+			}
+		}
+		\For{$len=n \to 1$}{
+			\For{$row=1 \to n-len+1$}{
+				\If{$dp[row][len+row-1]$}{\textbf{return} $len$;}
+			}
+		}		
+	\end{algorithm}
+\end{solution}
+
+\item 有n个圆盘，从小到大编号为$1,2,3,\ldots,n$，随意放在一根柱子上。允许的操作是可以一次拿起最上方$k$个盘子，并将它们整体翻转放回柱子，设计一个操作方案将这些盘子按照从小到大的顺序放在柱子上。
+
+\begin{solution}
+	该问题可以转化为将数字序列$1,2,3,\ldots,n$由乱序状态，只经过反转操作恢复由小到大的顺序。思路是遍历找到每个数字，通过反转将它置于正确的位置上。伪代码如下：
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\caption{$invert(end)$}
+		\KwIn{待反转序列S，反转结束的序号end}
+		\KwOut{反转得到的序列S}
+		\For{$i=1$ to $end$}{
+			$temp[i-start]=S[end-i+start]$;
+		}
+		\For{$i=1$ to $end$}{
+			$S[i]=temp[i-start]$;
+		}
+	\end{algorithm}
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\caption{$solve()$}
+		\KwIn{序列S}
+		\KwOut{反转序列S}
+		\For{$i=n \to 2$}{
+			\ForEach{$j=1 \to i$}{
+				\If{$S[j]=i$ and $i \neq j$}{
+					$invert(j)$;\\
+					$invert(i)$;	
+				}
+			}
+		}
+	\end{algorithm}
+\end{solution}
+
+\item 给出建堆两种方法的伪代码
+\begin{solution}
+	以最大堆为例：$up2down()$为自顶向下建堆，$down2up()$为自底向上建堆。
+	\begin{algorithm}
+		\SetAlgoLined
+		\caption{$up2down()$}
+		\KwIn{待建堆数组A，长度为n}
+		\KwOut{建堆后数组A，节点$i$的儿子为$2i$和$2i+1$}
+		\For{$i=2 \to n$}{
+			\While{$\lfloor i/2\rfloor>0$ and $A[\lfloor i/2\rfloor]<A[i]$}{
+				$temp=A[\lfloor i/2\rfloor]$;\\
+				$A[\lfloor i/2\rfloor]=A[i]$;\\
+				$A[i]=temp$;\\
+				$i=\lfloor i/2\rfloor$;
+			}
+		}
+	\end{algorithm}
+
+	\begin{algorithm}
+		\SetAlgoLined
+		\caption{$down2up()$}
+		\KwIn{待建堆数组A，长度为n}
+		\KwOut{建堆后数组A，节点$i$的儿子为$2i$和$2i+1$}
+		\For{$i=\lfloor n/2 \rfloor \to 1$}{
+			\While{$2i+1\leq n$}{
+				\If{$A[2i+1]>A[2i]$}{
+					\If{$A[2i+1]>A[i]$}{
+						$temp=A[2i+1]$;\\
+						$A[2i+1]=A[i]$;\\
+						$A[i]=temp$;\\
+						$i=2i+1$;
+					}
+				}
+				\Else{
+					\If{$A[2i]>A[i]$}{
+						$temp=A[2i]$;\\
+						$A[2i]=A[i]$;\\
+						$A[i]=temp$;\\
+						$i=2i$;
+					}
+				}
+			}
+			\If{$2i==n$}{
+				\If{$A[n]>A[i]$}{
+					$temp=A[i]$;\\
+					$A[i]=A[n]$;\\
+					$A[n]=temp$;
+				}
+			}			
+		}
+	\end{algorithm}
+\end{solution}
+\end{enumerate}
+
+%========================================================================
+\end{document}

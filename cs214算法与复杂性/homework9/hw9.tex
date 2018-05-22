@@ -1,0 +1,254 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework09}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item 如何将简单多边形划分为梯形（某些梯形可能退还为三角形）？给出算法及时间复杂性。
+\begin{solution}
+	设输入为有序的多边形顶点坐标序列，这里的有序是指从一点出发，作为一个有向图顺次连接成一个简单多边形。显然输入必须保证这个条件，否则无法唯一地确定一个多边形，与条件矛盾。
+	
+	从起始点开始顺次读取顶角。读入下一个顶角，计算当前顶角和前一个顶角的大小之和，如果小于$180^{\circ}$，做平行线与多边形边界交于一点，连接后成为一个梯形，否则向后顺次读取顶角。若仅剩余一个三角形无法分割则停止。当分割出平行四边形后，任意连接一条对角线化为两个三角形。
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{divide()}
+			\KwIn{多边形顶点序列$D=\{d_1,d_2,\ldots,d_n,d_1\}$}
+			当前顶点$now=d_2$;\\
+			上一个顶点$prev=d_1$
+			\While{$now\neq d_1$}{
+				\If{$now.degree+prev.degree>180^{\circ}$}{
+					在now角作prev角的非两角公共边的平行线，交多边形为p点;\\
+					划分多边形;\\
+					\If{被划分区域为平行四边形}{
+						分割为两个三角形;\\
+					}
+					\ElseIf{被划分区域为多边形}{
+						调用该方法再次进行分割;\\
+					}
+					prev=p;\\
+					now为按多边形边序列的方向转向的下一点;\\
+				}\ElseIf{$now.degree+prev.degree<180^{\circ}$}{
+					直接跳过;\\
+				}\Else{
+					在顶角prev与now较长的一边上截取一段小于对边的线段作为分割点p的位置;//等于时为平行四边形\\
+					划分出一块梯形;\\
+					prev=p;\\
+					now为按多边形边序列的方向转向的下一点;\\
+				}
+			}
+			
+		\end{algorithm}
+	\end{center}
+	\textbf{复杂度分析：}该算法遍历了每个顶点，分割过程为常数时间操作，所以时间复杂度为$\mathcal{O}(n)$
+\end{solution}
+
+\item 给定平面上n条线段，设计算法用O(nlogn)时间确定其中是否有两条线段相交。
+\begin{solution}
+	对于给定的n条线段，先对他们的端点根据x坐标排序。找到x坐标最小的极端点作为起始点。设定一条扫描线，从左往右扫描（即随时间改变x坐标），扫描的状态集合S，是一个动态集合，描述扫描线的状态，包含当前与扫描线交叉的线段，这些线段按照交点的y坐标排序。该顺序动态变化，会在以下情况发生改变：遇到新的线段、现有线段结束。事件点为线段端点，并按之前得到的x坐标排序后的顺序依次对这些点进行处理。对于线段s的左端点：将线段s加入动态集合中、检查s在S中的相邻线段与s是否有交点；对于线段s的右端点：从动态集合S中删除线段，检查s在S中的相邻线段之间是否有交点。
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{checkIntersection()}
+			\KwIn{一个线段的集合$L=\{l_1,l_2,\ldots,l_n\}$}
+			\KwOut{是否有交点}
+			根据x坐标值以递增的顺序排序线段端点，把它们插入到最小堆E之中。
+			\While{堆E是非空的}{
+				从最小堆E中弹出一个点p;\\
+				\If{p是一个左端点}{
+					设l是左端点为p的线段;\\
+					insert(l,S);\\
+					$l_1\leftarrow above(l,S)$;//$l_1$为l上方邻近线段;\\
+					$l_2\leftarrow below(l,S)$;//$l_2$为l下方邻近线段;\\
+					\If{l与$l_1$相交在$q_1$}{
+						输出存在交点;\\
+						终止;\\
+					}
+					\If{l与$l_2$相交在$q_2$}{
+						输出存在交点;\\
+						终止;\\
+					}
+				}\ElseIf{p是一个右端点}{
+					设l是右端点为p的线段;\\
+					insert(l,S);\\
+					$l_1\leftarrow above(l,S)$;//$l_1$为l上方邻近线段;\\
+					$l_2\leftarrow below(l,S)$;//$l_2$为l下方邻近线段;\\
+					\If{$l_1$与$l_2$相交在$q$}{
+						输出存在交点;\\
+						终止;\\
+					}
+				}
+			}
+			输出不存在交点;\\
+			终止;
+		\end{algorithm}
+	\end{center}
+	\textbf{复杂度分析：}该算法首先对所有顶点进行排序，该步的时间复杂度为$\mathcal{O}(n\log n)$。之后扫描线遍历时，时间复杂度与交点数有关，为$\mathcal{O}((2n+m)\log(2n+m))$，而检查状态集中的线段是否是相交的是一个常数时间的操作。所以总的时间复杂度为$\mathcal{O}((2n+m)\log(2n+m))$。事实上这个算法中，一旦找到一个交点，已经可以得出结论，算法就会结束，所以时间复杂度是$\mathcal{O}(n\log n)$。
+\end{solution}
+
+\item 如何确定一个给定的多边形是简单多边形
+\begin{solution}
+	对多边形顶点根据x坐标值排序，之后同样找到x坐标最小的极端点作为起始点。设定一条扫描线，从左往右扫描（即随时间改变x坐标），扫描的状态集合S，是一个动态集合，描述扫描线的状态，包含当前与扫描线交叉的线段，这些线段按照交点的y坐标排序。该顺序动态变化，会在以下情况发生改变：遇到新的线段、现有线段结束，遇到两条线段交点。事件点为线段端点，并按之前得到的x坐标排序后的顺序依次对这些点进行处理。对于线段s的左端点：将线段s加入动态集合中、检查s在S中的相邻线段与s是否有交点；对于线段s的右端点：从动态集合S中删除线段，检查s在S中的相邻线段之间是否有交点；对于线段s和t的交点：交换s和t的次序，检查s、t和他们的相邻线段是否有交点。
+	
+	如果这n条线段的交点数为n，则说明除了顶点外，没有其他交点，是一个简单多边形，否则不是简单多边形。
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{intersection()}
+			\KwIn{一个线段的集合$L=\{l_1,l_2,\ldots,l_n\}$}
+			\KwOut{交点数m}
+			根据x坐标值以递增的顺序排序线段端点，把它们插入到最小堆E之中。
+			\While{堆E是非空的}{
+				从最小堆E中弹出一个点p;\\
+				\If{p是一个左端点}{
+					设l是左端点为p的线段;\\
+					insert(l,S);\\
+					$l_1\leftarrow above(l,S)$;//$l_1$为l上方邻近线段;\\
+					$l_2\leftarrow below(l,S)$;//$l_2$为l下方邻近线段;\\
+					\If{l与$l_1$相交在$q_1$}{
+						在S中交换l和$l_1$;\\
+						$q_1$入堆;\\
+					}
+					\If{l与$l_2$相交在$q_2$}{
+						在S中交换l和$l_2$;\\
+						$q_2$入堆;\\
+					}
+				}\ElseIf{p是一个右端点}{
+					设l是右端点为p的线段;\\
+					insert(l,S);\\
+					$l_1\leftarrow above(l,S)$;//$l_1$为l上方邻近线段;\\
+					$l_2\leftarrow below(l,S)$;//$l_2$为l下方邻近线段;\\
+					\If{$l_1$与$l_2$相交在$q$}{
+						在S中交换$l_1$和$l_2$;\\
+						q入堆;\\
+					}
+				}\Else{
+					//p是交点\\
+					设相交于p点的线段是$l_1$和$l_2$，且$l_1$在上方;\\
+					$l_3\leftarrow above(l_1,S)$;//$l_3$为$l_1$上方邻近线段;\\
+					$l_4\leftarrow below(l_2,S)$;//$l_4$为$l_2$下方邻近线段;\\
+					\If{$l_2$与$l_3$相交在$q_1$}{
+						在S中交换$l_2$和$l_3$;\\
+						$q_1$入堆;\\
+					}
+					\If{$l_1$与$l_4$相交在$q_2$}{
+						在S中交换$l_1$和$l_4$;\\
+						$q_2$入堆;\\
+					}
+				}
+			}
+		\end{algorithm}
+	\end{center}
+	
+	
+	\textbf{复杂度分析：}该算法首先对所有顶点进行排序，该步的时间复杂度为$\mathcal{O}(n\log n)$。之后扫描线遍历时，时间复杂度与交点数有关，为$\mathcal{O}((2n+m)\log(2n+m))$，而检查状态集中的线段是否是相交的是一个常数时间的操作。所以总的时间复杂度为$\mathcal{O}((2n+m)\log(2n+m))$。事实上这个算法中，一旦m超过n，已经可以得出结论，算法就会结束，所以时间复杂度是$\mathcal{O}(n\log n)$。
+\end{solution}
+
+\item 设P和Q是两个简单多边形，顶点总数为n，设计$\mathcal{O}(n\log n)$时间算法确定P和Q是否相交
+\begin{solution}
+	首先对输入的两个多边形的顶点序列排序，选择x坐标最小的极端点作为扫描线的起始位置。
+	
+	由于已知了P和Q是简单多边形，所以两多边形的边自身除了顶点外不会有其他交点。设定扫描线从左往右，设两个状态集S和T，分别记录当前与扫描线相交的P和Q中的线段，只需要检查S和T中的线段是否相交。
+	
+	或是仿照上例，直接统计这n条线段的交点数m是否为n，如果是n，则说明除了两个简单多边形的顶点以外他们没有其余交点，即多边形P、Q间没有交集，否则P、Q相交。
+	
+	该算法的时间复杂度为$\mathcal{O}((2n+m)\log(2n+m))$。同上一题一样，一旦m超过n，已经可以得出结论，算法就会结束，所以时间复杂度是$\mathcal{O}(n\log n)$。
+\end{solution}
+
+\item 矩阵$A_{m\times n}$和矩阵$B_{n\times p}$相乘得到矩阵$C_{m\times p}$，根据矩阵相乘的定义，矩阵$C$中的元素为：
+$$C_{ij}=\sum_{k=1}^n{A_{ik}B_{kj}}
+$$
+根据这一定义，为求矩阵$C$，共需$n^3$次乘法。那么$n$个矩阵$M_1,M_2,\ldots,M_n$相乘需要多少次乘法呢？由于矩阵乘法满足分配律，因此多个矩阵相乘时有多种计算方式，而每种方式所需的计算量是不同的。假设$M_1$的维数是$2\times10$，$M_2$的维数是$10\times2$，$M_3$的维数为$2\times10$，则计算$M_1*M_2*M_3$有两种方式：
+$$(M_1*M_2)*M_3$$ 
+$$M_1*(M_2*M_3)$$
+这两种计算方式得到的结果矩阵是一样的，但所需乘法数量分别为80和400！
+\begin{solution}
+	两个相乘的矩阵大小分别设为$i\times j$和$j\times k$，那么这两个矩阵相乘后，实际进行的乘法的数量为$i\times j\times k$。
+	
+	设总的乘法次数为$S$。考虑$M_1,M_2,\ldots,M_n$，它们的规模分别是$(i_1,i_2),(i_2,i_3),\ldots,(i_{n-1},i_n)$。构造一序列$I=\{i_1,\ldots,i_n\}$。运用结合律后，假设我们计算的是$M_{j-1}$和$M_{j}$，进行了$i_{j-1}\times i_j\times i_{j+1}$步乘法。这步的结果是，我们相当于移除了序列I中的$i_j$，新得到了$I'=\{i_1,\ldots,i_{j-1},i_{j+1},\ldots,i_n\}$。显然，当I中只剩下两个数字的时候，即计算出最终结果的时候，算法结束(事实上$i_1$和$i_n$是不可能被移除的两个数字，因为乘积的规模是确定的)。每次移除$i_j$,总的乘法次数$S$的增量值为$i_j$元素时其与左右元素的乘积。
+	
+	只要我们每次从$I$中移除的是最大的元素，就可以保证最后的总的乘法次数$S$最小。该算法的正确性在于，一个数被计算到S的增量中，当仅当它被移除或它的邻居被移除。而总的移除次数是固定的，所以优先移除最大的元素可以保证它被计算的次数尽可能得少。被移除的顺序也就对应决定了矩阵乘积的结合顺序。
+	
+	所以算法是
+	\begin{algorithm}
+		\caption{minMulTimes()}
+		\KwIn{矩阵$M_1,M_2,\ldots,M_n$}
+		\KwOut{乘积总次数S}
+		遍历一次矩阵序列构造出$I=\{i_1,\ldots,i_n\}$;
+		\While{$I.size()>2$}{
+			从$i_2$到$i_{n-1}$中找到最大值;\\
+			$i_k$,$i_l$是$i_j$左右的元素;\\
+			$S=S+i_k\times i_j\times i_l$;\\
+			从$I$中移除$i_j$;
+		}
+	\end{algorithm}
+
+	我们可以预先为I中的元素排序，建一个表保存这个顺序。那么在挑选最大值时就可以直接根据这个表挑选，算法的时间复杂度为$\mathcal{O}(n\log n)$。
+\end{solution} 
+
+\item 有$n$种液体$S_1,S_2,\ldots,S_n$，都含有$A$,$B$两种成分，含量分别为$\{a_1,b_1\},\{a_2,b_2\},\ldots,\{a_n,b_n\}$，$a_i+b_i<100\%$。现欲利用这$n$种液体配制目标液体T，使之$A$和$B$的含量分别为$x$和$y$。设计算法判别能否成功配制，并给出算法时间复杂性。
+
+\begin{solution}
+	设饮料的体积分别为：$V_1,V_2,\ldots,V_n$。则等式为
+	$$\sum_{i=1}^{n}{a_iV_i}=x\sum_{i=1}^{n}{V_i}$$
+	$$\sum_{i=1}^{n}{b_iV_i}=y\sum_{i=1}^{n}{V_i}$$
+	结合两式，可得只要满足下面这个等式即可
+	$$\sum_{i=1}^{n}{(a_i-\frac{x}{y}b_i)V_i}=0$$
+	该等式中各项的体积$V_i$的各项系数已知。由于$V_i\geq0$，故若$\forall i\in\{1,\ldots,n\}$，$a_i-\frac{x}{y}b_i>0$或$\forall i\in\{1,\ldots,n\}$，$a_i-\frac{x}{y}b_i>0$，则必然无解。否则存在无数多组解。
+	
+	所以判别算法为，$i=1\to n$，分别计算$a_i-\frac{x}{y}b_i$，如果不是均大于0或均小于0，就必然存在解。这个算法只需要遍历一次输入，所以它的时间复杂度为$\mathcal{O}(n)$。
+\end{solution}
+\end{enumerate}
+
+%========================================================================
+\end{document}

@@ -1,0 +1,13 @@
+﻿生成启动时间为 2018/4/18 18:20:13。
+     1>项目“E:\编程\资料\书\cs\算法复杂性\homework6\reportcode\LinkGameAlgorithm\LinkGameAlgorithm\LinkGameAlgorithm.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         E:\编程\VisualStudio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt source.cpp
+         source.cpp
+       Link:
+         E:\编程\VisualStudio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\编程\资料\书\cs\算法复杂性\homework6\reportcode\LinkGameAlgorithm\Debug\LinkGameAlgorithm.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\编程\资料\书\cs\算法复杂性\homework6\reportcode\LinkGameAlgorithm\Debug\LinkGameAlgorithm.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\编程\资料\书\cs\算法复杂性\homework6\reportcode\LinkGameAlgorithm\Debug\LinkGameAlgorithm.lib" /MACHINE:X86 Debug\source.obj
+         LinkGameAlgorithm.vcxproj -> E:\编程\资料\书\cs\算法复杂性\homework6\reportcode\LinkGameAlgorithm\Debug\LinkGameAlgorithm.exe
+     1>已完成生成项目“E:\编程\资料\书\cs\算法复杂性\homework6\reportcode\LinkGameAlgorithm\LinkGameAlgorithm\LinkGameAlgorithm.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:01.49

@@ -1,0 +1,329 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework06}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item  什么时候单源最短路径算法对于某些边权值为负的图是有效的？
+
+\begin{solution}
+	有以下两种情况：
+	\begin{enumerate}
+		\item 不能出现负权回路，如果出现负权回路，那么可以无限经过该回路将路径缩短，不会有最短回路。
+		\item 单元最短路径算法是一个贪心算法，它成立的基础是当前最短路径是整个图中的最短路径。所以若存在负权，需要保证之前不是最短的路径加上负权的边后仍然大于最短路径。即不能改变已经确定的最短路径。
+	\end{enumerate}
+\end{solution}
+
+\item 证明任意连通图中必然存在一个点，删除该点不影响图的连通性。用线性时间找到这个点
+
+\begin{solution}
+		证明：如果图中不存在回路，那么一定存在度为1的点，显然删除它不会影响连通性。如果不存在度为1的点，那么说明原图为点数大于$2$的双连通图，那么在双连通图中，只有关节点删除后会影响连通性。
+	\begin{center}
+	\begin{algorithm}[H]
+		\caption{deleteVertice()}
+		\KwIn{点数n，点集V，邻接表edge}
+		\KwOut{删除点}
+		initialize a degree array of size $n$\\
+		\For{$i=1\to n$}{
+			\For{$e_{ij} in edge$}{
+				degree[i]+=1;
+			}
+			\If{degree[i]}{
+				output i;\\
+				return;
+			}
+		}
+		Biconnected\_Components();\\
+		//求解节点HIGH值和DFS顺序下的节点标号DFS\_Number\\
+		\For{$i=1\to n$}{
+			\If{v[i].HIGH!=v.DFS\_Number}{
+				output i;//不是关节点就可以删除\\
+			}
+		}
+	\end{algorithm}
+	\end{center}
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{Biconnected\_Components()}
+			\KwIn{V,E（无向连通图点集、边集），节点数n，DFS树根节点v}
+			\For{v in V}{
+				v.DFS\_Number=0;\\
+			}
+			DFS\_N=n;
+			BC(v);
+		\end{algorithm}
+	\end{center}
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{BC()}
+			\KwIn{DFS开始节点v}
+			v.DFS\_Number=DFS\_N;//对新点标号\\
+			DFS\_N=DFS\_N-1;\\
+			Stack.push(v);\\
+			v.HIGH=v.DFS\_Number;//初始HIGH都是自身值
+			\For{e(v,w) in edge}{
+				Stack.push(e);//由于是无向图边将进栈两次
+				\If{w is not the parent of v}{
+					\If{w.DFS\_Number=0}{
+						BC(w);//DFS\_Number为0还没有被遍历到
+						\If{$w.HIGH\leq v.DFS\_Number$}{
+							\While{Stack.top()!=v}{
+								Stack.pop();		
+							}
+							//移除栈中的边和点，他们组成的子图是一个双连通图;\\
+							Stack.pop();\\
+							Stack.push(v);\\
+							//因为v还可能同时是另一段分支的一部分\\
+							v.HIGH=max(v.HIGH,w.HIGH);\\
+						}
+					}
+				}
+				\Else{
+					//此时(v,w)将该点连到了parent\\
+					v.HIGH=max(v.HIGH,w.DFS\_Number);\\
+				}
+			}
+		\end{algorithm}
+	\end{center}
+	
+	\textbf{复杂度分析：}算法中度数的统计遍历了边集，所以时间为$\mathcal{O}(|E|)$，双连通图的判定时间为$\mathcal{O}(|E|+|V|)$，总的时间复杂度为$\mathcal{O}(|E|+|V|)$。
+\end{solution}
+
+\item 设G是有向非循环图，其所有路径最多含$k$条边，设计线性时间算法，将所有顶点分为$k+1$组，每一组中任意两个点之间不存在路径
+
+\begin{solution}
+	先由某个初始节点DFS遍历一次，标记是否访问过。第一次读到叶子节点就进行一次分配，回溯后进入刚刚经过的分支的兄弟分支，由于仍然在同一棵树上，之前的连通性仍然保证，只需要看之后的部分，需要注意如果读到已经访问过的节点在分组时需要避开。
+	
+	如果仍有点未分配，说明图从初始节点遍历是不连通的，那么还会有未访问的点和边。找到这些独立的路径，同样DFS操作。注意此时求出的路径上的点尽管确实与最初的节点不连通，但是可能与之前去掉的某些点连通，这时可以利用之前记录的各点是否访问过，在分配组时避开被访问过的点。重复算法直到所有点都被分配。
+	
+	由于我们在遍历过程中按在路径上的次序分配点，所以不可能有放不到$k+1$个组中的点。下方算法需要更换点执行，直到所有点都被访问过。
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{DFSdivide(v)}
+			\KwIn{边集E,点集V,DFS开始节点v}
+			initialize a group array of size $(k+1)$;\\
+			initialize a flag array of size $(k+1)$;\\
+			//判断新路径经过了哪些访问过的点;\\
+			\For{v in V}{
+				v.depth=0;\\
+				v.visited=False;\\
+			}
+			depth=0;\\
+			\If{!v.visited}{
+				depth=depth+1;\\
+				v.depth=depth;\\
+				v.visited=True;\\
+				group[v.depth].push(v);\\
+			}
+			\Else{
+				flag[v.depth];\\
+				depth=depth+1;\\
+				从之前的group[v.depth]中删除掉这条路径上的点;\\
+				//这里比较难实现还没有想出来\\
+			}
+			\For{child in v.children}{
+				divide(child);
+			}
+		\end{algorithm}
+	\end{center}
+	
+	\textbf{复杂度分析：}遍历一次图需要遍历所有点和边，所以总的时间复杂度为$\mathcal{O}(|E|+|V|)$
+	
+	如果对时间限制不严格，那么另一种思路是我们可以使用传递闭包算法，根据邻接矩阵，去构造一个传递闭包的矩阵，这个矩阵直接反应了两点间的连通性。这样的时间复杂度是$\mathcal{O}(|V|^3)$。那么可以根据这个矩阵再进行点的分配，这个过程需要遍历传递闭包算法构造出的矩阵，最终总的复杂度会达到$\mathcal{O}(|V|^3/w)$，在并行处理的规模w非常大，图非常密集的情况下，可以强行解释它近似于$\mathcal{O}(|E|)$。传递闭包的算法实现起来较简单如下：
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{transiveClosure()}
+			\KwIn{邻接矩阵E，点数n}
+			\For{$i=1\to n$}{
+				\For{$j=1\to n$}{
+					\If{E[i][j]==True}{
+						\For{$k=1\to n$}{
+							\If{E[j][k]==True}{E[i][k]=True;}
+						}
+					}	
+				}
+			}
+		\end{algorithm}
+	\end{center}
+\end{solution}
+
+\item 给定连通无向图G，以及3条边$a$,$b$,$c$，在线性时间内判断G中是否存在一个包含$a$和$b$但不含$c$的闭链。
+\begin{solution}
+	由于一条边仅会出现在一个双连通分支中，而两边同属于一个双连通分支当仅当存在闭链包含两条边，所以考虑将判断闭链转化为判断双连通分支，直接移除点$c$及其相连的边，此时如果$a$，$b$不属于一个双连通分支，故确定原命题不成立。如果$a$，$b$属于一个双连通分支，那么该双连通分支中必存在包含$a$，$b$的闭链。
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{ABwithoutC()}
+			\KwIn{点集V,边集E}
+			remove C from V and related edge from E;\\
+			ABwithoutC();\\
+			判断是否存在双连通分支;\\
+		\end{algorithm}
+	\end{center}
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{Biconnected\_Components()}
+			\KwIn{V,E（无向连通图点集、边集），节点数n，DFS树根节点v}
+			\For{v in V}{
+				v.DFS\_Number=0;\\
+			}
+			DFS\_N=n;
+			BC(v);
+		\end{algorithm}
+	\end{center}
+	\begin{center}
+		\begin{algorithm}[H]
+			\caption{BC()}
+			\KwIn{DFS开始节点v}
+			v.DFS\_Number=DFS\_N;//对新点标号\\
+			DFS\_N=DFS\_N-1;\\
+			Stack.push(v);\\
+			v.HIGH=v.DFS\_Number;//初始HIGH都是自身值
+			\For{e(v,w) in edge}{
+				Stack.push(e);//由于是无向图边将进栈两次
+				\If{w is not the parent of v}{
+					\If{w.DFS\_Number=0}{
+						BC(w);//DFS\_Number为0还没有被遍历到
+						\If{$w.HIGH\leq v.DFS\_Number$}{
+							\While{Stack.top()!=v}{
+								Stack.pop();		
+							}
+							//移除栈中的边和点，他们组成的子图是一个双连通图;\\
+							Stack.pop();\\
+							Stack.push(v);\\
+							//因为v还可能同时是另一段分支的一部分\\
+							v.HIGH=max(v.HIGH,w.HIGH);\\
+						}
+					}
+				}
+				\Else{
+					//此时(v,w)将该点连到了parent\\
+					v,HIGH=max(v.HIGH,w.DFS\_Number);\\
+				}
+			}
+		\end{algorithm}
+	\end{center}
+	
+	\textbf{复杂度分析：}双连通图的判定时间为$\mathcal{O}(|E|+|V|)$，所以算法的时间复杂度是线性的。
+\end{solution}
+
+\item 设计线性时间算法求树的最大匹配
+\begin{solution}
+	动态规划的方法。设n为点数，矩阵$dp$的大小为$n\times 2$，$dp[i][0]$为第$i$号节点不与子节点匹配时子树的最大匹配数，$dp[i][1]$为第$i$号节点与子节点匹配时的子树的最大匹配数，$dp$状态转移方程为$$dp[i][0]=\sum_{j\in children}max(dp[j][1],dp[j][0])$$$$dp[i][1]=\sum_{j\in children}max(dp[j][1],dp[j][0])-min_{j\in children}(max(dp[j][1],dp[j][0]))+dp[j][0]+1$$最后输出$max(dp[0][0],dp[0][1])$。
+	结合状态转移方程和广度优先搜索易得到具体算法。
+	
+	\textbf{复杂度分析：}树形动态规划，遍历了每个节点，由于儿子数量不确定，时间复杂度难以确定。假如平均的儿子数量为c，节点数为|V|，那么时间复杂度为$\mathcal{O}(c|V|)$。
+\end{solution}
+
+\item 设$n$个选手进行单循环赛，比赛结果没有平局，且存储在一个矩阵中，设计$\mathcal(O)(n\log n)$的算法为这些选手排序，使得$P_1$胜$P_2$，$P_2$胜$P_3$，以此类推。
+\begin{solution}
+	在问题中，定义有向边$a\to b$表示选手$a$战胜选手$b$，那么题干可以表述为，由$n$个点构成的有序完全图，找到其中的哈密顿道路。
+	首先说明哈密顿道路的存在性，引入两个定理：
+	\begin{enumerate}
+		\item 在$n(n\geq2)$阶有向图D中，如果所有有向边均用无向边代替，所得无向图中含生成子图$K_n$，则有向图中存在哈密顿道路。
+		\item 设$G$是$n(n\geq3)$阶无向简单图，如果$G$中任何一对不相邻的顶点度数之和都大于等于$n$，则$G$是哈密顿图。
+	\end{enumerate}
+	由以上定理可知，$n(n\geq3)$阶有序的完全图中存在哈密顿道路。题干要求的$\mathcal(O)(n\log n)$应该是针对的边而言。因为如果是针对点的话，需要对每个点都只进行$\mathcal(O)(\log n)$的操作，而图是一个完全图，所以甚至连点连接的边的方向信息都获取不全，无法构造路径。
+	下面是一个构造哈密顿道路的算法，由于我们知道这个道路必然存在，所以可以枚举每个点进行尝试。这里利用归纳法的思路，当我们得到了前n个点的哈密顿道路后，想要加入第n+1个点，会有三种情况，只存在它到每个点的道路，那么加入到头部即可；如果是只有其他点到它的道路，那么加到最后；如果均有，那么它一定可以找到一个空隙将它插入。其中第二种第三种均为向后延伸路径，可以合并。事实上这种数学归纳法的算法也证明了该图中必然存在哈密顿路径。
+	\begin{center}
+	\begin{algorithm}[H]
+		\caption{Hamilton()}
+		\KwIn{邻接矩阵E,点数n}
+		\KwOut{路径path}
+		initialize matrix next -1;\\
+		\For{$i=0\to n$}{
+			head=i;//以每个点为起点尝试查找\\  
+			\For{$j=1\to n$}{  
+				\If{i==j}{continue;}  
+				\If{E[j][head]==1}{  
+					//第一种：向前延伸路径 \\
+					next[j]=head;\\  
+					head=j; \\ 
+				} 
+				\Else{
+					//第二种：插入延伸路径 \\  
+					pre=head,pos=next[head];\\
+					\While{$pos!=-1$ and $E[pos][j]==1$}{  
+						pre=pos;  \\
+						pos=next[pre]; \\
+					}
+					next[pre]=j; \\
+					next[j]=pos; \\
+				}  
+			}
+			//填写路径\\
+			k=1;j=head; \\
+			\While{$j!=-1$}{path[k++]=j;\\j=next[j]}
+			\If{$path[n]!=-1$}{return path;}
+			//路径最后一项也被填了\\
+		}
+	\end{algorithm}
+
+	\textbf{复杂度分析：}算法的时间复杂性最坏情况下为$\mathcal{O}(|V|^3)$，由于完全图中边数为$|V|\times(|V|-1)/2$，所以可以视为$\mathcal{O}(|E|^{1.5})$。不是一个$\mathcal{O}(|E|\log |E|)$的算法。
+	\end{center}
+\end{solution}
+
+\item 无向图$G$的顶点覆盖是指顶点集合$U$，$G$中每条边都至少有一个顶点在此集合中。设计线性时间算法为树寻找一个顶点覆盖，并且使该点集的规模尽量小。
+\begin{solution}
+	动态规划的方法。设n为点数，矩阵$dp$的大小为$n\times 2$，$dp[i][0]$为第$i$号节点不被覆盖时子树的最小点覆盖数，$dp[i][1]$为第$i$号节点被覆盖时子树的最小点覆盖数，$dp$状态转移方程为$$dp[i][0]=\sum_{j\in children}max(dp[j][0],dp[j][1])$$$$dp[i][1]=\sum_{j\in children}(dp[j][0])+1$$
+	最后输出$min(dp[0][0],dp[0][1])$。
+	结合状态转移方程和广度优先搜索易得到具体算法。
+	
+	\textbf{复杂度分析：}树形动态规划，遍历了每个节点，由于儿子数量不确定，时间复杂度难以确定。假如平均的儿子数量为c，节点数为|V|，那么时间复杂度为$\mathcal{O}(c|V|)$。
+\end{solution}
+\end{enumerate}
+
+%========================================================================
+\end{document}

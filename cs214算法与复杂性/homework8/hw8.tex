@@ -1,0 +1,99 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework07}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item {
+	对凸多边形
+	\begin{enumerate}
+		\item 有多少种三角划分的方法？
+		\begin{solution}
+			对于凸多边形，假设我们已知任意$k$边形的三角划分数为$S_k$，其中$k\ge4$，特殊地，定义$S_2=1$和$S_3=1$。那么对于$k+1$边形，由于其轮廓上任意一条边都属于一个三角形，我们可以取一对相邻点记作$v_1$和$v_{k+1}$，沿边界标记其他点为$v_2,\ldots,v_k$，这对相邻点可以与$v_2,\ldots,v_k$中任意一点连接，将$k+1$边形分划为一个三角形和两个多边形的组合。那么有递推关系$S_{k+1}=S_2\times S_k+S_3\times S_{k-1}+\ldots+S_k\times S_2$。卡特兰数的解为$h_{n+1}={2n\choose n}/(n+1)$，而观察$S_{n}=h_{n-2}$。综上可以得到$S_{n}={2n-4\choose n-2}/(n-1)$。		
+		\end{solution}
+		\item 如何使对角线长度之和最小？
+		\begin{solution}
+			采用贪心法的思路，先计算每条对角线长度，并为它们排序。总是选择当前最短的一条对多边形进行划分，如果对角线出现交点，就按照顺序重新选择下一条加入三角划分的图中，直到选择了$n-3$条边。
+			证明该贪心算法的正确性：在选取当前最短对角线$e_1$后，下一个被选中的是$e_2$，如果仍然存在其他对角线满足$e_1+e_2+\ldots+e'_{n-3}>e'_1+e'_2+\ldots+e'_{n-3}$，而注意到$e_1$是当前的最小值，则必有$e_i+e_j>e'_i+e'_j$，即$n-1$边形内部的一个三角形和与其拥有一条公共边的、顶点在多边形外部的三角形相比，周长较小，这是不可能的，所以不存在使得对角线长度更小的方法。
+		\end{solution}
+	\end{enumerate}
+} 
+	
+\item 求n个矩形的交集，这些矩形的边都平行于坐标轴
+\begin{solution}
+	若采用分治法。这里指的是将矩形的集合一分为二，然后对两个子集中的矩形分别求交集，重复如此操作直到分割到基础情况。基础情况为两个多边形或一个多边形，如果是一个多边形，则直接返回该多边形；如果是两个多边形，返回他们的交集（可能为空集）。考虑两个凸多边形的交集仍然为凸多边形，仍然使用扫描线的思路，由凸集的性质，扫描线与一个凸多边形至多有两个交点，所以扫描线状态表最多需要保存4个点。设扫描线从左到右移动，求两个多边形的交集可以在$\mathcal{O}(n)$时间内完成。所以该算法的时间复杂度为$\mathcal{O}(n\log n)$。
+	
+	特别地，因为这些矩形的边都是平行于坐标轴的，因此我们可以给出一个类似求线段交点的线性时间算法。扫描线竖直与矩形边重合，从左向右移动。事件进度表为矩形的竖直边，扫描线扫描时顺序读取读到的边，如果所有矩形的左侧边未读完就读到了某个矩形右侧边，那么交集为空，否则读完左侧边后，只保留最后一条左侧边，这是可能存在的重合区域的左侧边，读到的第一条右侧边位可能存在的重合区域的右侧边。同理，在扫描时还可以，找到重合区域的上边界和下边界。扫描是线性的，所以算法的时间复杂度为$\mathcal{O}(n)$。但是如果实现扫描必须先给矩形的各边排序，则时间复杂度为$\mathcal{O}(n\log n)$，同时在排序时可以求出所有矩形各边的极值，找出重合部分，不必进行上面说的扫描。
+	\begin{algorithm}
+		\caption{findIntersection()}
+		\KwIn{矩形集合R}
+		//对所有矩形的各边排序并顺便求出重合部分，结束不必再扫描\\
+		\If{最靠右的矩形左侧边x坐标>最靠左的矩形右侧边x坐标}{
+			return $\emptyset$\\
+		}
+		\ElseIf{最靠上的矩形下侧边y坐标>最靠下的矩形上侧边y坐标}{
+			return $\emptyset$\\
+		}
+		\Else{
+			//扫描矩形并求出下面各个数值\\
+			maxLeft,maxDown,minUp,minRight即为矩形交集\\
+		}
+	\end{algorithm}
+\end{solution}
+\end{enumerate}
+
+%========================================================================
+\end{document}

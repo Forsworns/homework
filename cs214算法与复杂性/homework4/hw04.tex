@@ -1,0 +1,270 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\renewcommand{\algorithmcfname}{算法}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+{\setlength{\epsfxsize}{#2\hsize}
+	\centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\usepackage{listings}
+\lstset{
+	tabsize=2 % sets default tabsize to 2 spaces
+}
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework04}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Spring 2018}}
+\begin{center}
+
+\footnotesize{\color{black} Name: 杨培灏  \quad Student ID: 516021910233}
+\end{center}
+
+\begin{enumerate}
+
+\item 背包问题：假设有$n$个不同的物品，被分成了$k$组，每组物品只能选一个（可以不选），那么背包是否能够恰好放满？
+\begin{solution}
+	数组dp（$k\times max\_capcity$）表示到第$k$组中物品为止可以填满的背包空间大小。初始$dp[1][w_1^j]=true,w_1^j \in W_1$，其余均为false。
+	\begin{algorithm}
+		\caption{$backpack()$}
+		\KwIn{n个物品重量$w_i$（按组分为$W_1,W_2,\ldots,W_k$）}
+		\KwOut{布尔变量表示能否恰好放满}
+		\For{$W_i$ in $\{W_2,\ldots,W_k\}$}
+		{
+			\For{$w$ in $1$ to $max\_capcity$}{
+				\For{$w_i^j$ in $W_i$}{
+					\If{$w-w_i^j>0$}{
+						$dp[i][w]=dp[i-1][w]$ or $dp[i-1][w-w_i^j]$;
+					}
+				}
+			}
+		}
+	\end{algorithm}
+\end{solution}
+\item 证明二分查找是有序序列查找的最优算法
+\begin{solution}
+	建立类似排序的决策树，设输入序列为$x_1,x_2,\ldots,x_n$，每个非叶节点表示对输入序列的一次查询，查询结果有两种可能，根据查询结果可以选择左右分支。直到查询到叶子节点。叶子节点表示所有可能的输出，即序列中的某个元素或空串，所以共有$(n+1)$种情况。又因为该树为二叉树，所以它的高度最大为$\log n$。而最坏情况下，算法的运行时间为决策树的高度。因此不可能存在一个查找算法的时间复杂度小于$\mathcal{O}(\log n)$。也即二分查找算法是有序序列查找的最优算法。
+\end{solution}
+\item 如何修改KMP算法，使之能够获得字符串$B$在字符串$A$中出现的次数
+\begin{solution}
+	\begin{algorithm}
+		\caption{$String_Match(A,n,B,m)$}
+		\KwIn{A(长度为n的字符串)和B（长度为m的字符串），数组next}
+		\KwOut{count（字符串B在字符串A中出现的次数）}
+		j=1;
+		i=1;
+		count=0;
+		\While{$i\leq n$}{
+			\If{B[j]=A[i]}{
+				j=j+1;\\
+				i=i+1;
+			}
+			\Else{
+				j=next[j]+1;\\
+				\If{j=0}{
+					j=1;\\
+					i=i+1;
+				}
+				\If{j=m+1}{
+					counter=counter+1;\\
+					j=1;\\
+					i=i+1;
+				}
+			}
+		}
+	\end{algorithm}
+	\begin{algorithm}
+		\caption{$Compute_Next(B,m)$}
+		\KwIn{B（长度为m的字符串）}
+		\KwOut{next（大小为m的数组）}
+		next[1]=-1;\\
+		next[2]=0;\\
+		\For{i=3 to n}{
+			j=next[i-1]+1;\\
+			\While{$b_{i-1}\neq b_j$ and $j>0$}{
+				j=next[j]+1;
+			}
+			next[i]=j;
+		}
+	\end{algorithm}
+\end{solution}
+
+\item 序列T和P的最长公共子序列（LCS）L定义为T和P的共同子序列中最长的一个，而最短公共超序列(SCS)S定义为所有以T和P为子序列的序列中最短的一个。设计高效算法求序列T和P的LCS和SCS的长度。
+\begin{solution}
+	SCS的长度应该是$|T|+|P|-LCS$，即以T和P的最长公共子序列为基础，增加上两者不重合的部分。
+	而LCS的求法如下，利用动态规划的思想：
+	\begin{algorithm}
+		\caption{LCS(T, P)}
+		\KwIn{序列T,P}
+		\KwOut{最长子序列长度}
+		设m、n分别为T、P的长度;
+		初始化二维数组dp为$(m+1)\times (n+1)$的零矩阵，dp[i][j]表示序列T[i]和P[j]结尾的最长公共子序列长度;
+		\For{$i$ in $1\to m$}{//0行和0列无意义存为0，只用来简化对下标的讨论
+			\For{$j$ in $1\to n$}{
+				\If{T[i]=P[j]}{
+					dp[i][j]=dp[i-1][j-1]+1;
+				}else{
+					dp[i][j]=0;
+				}
+			}
+		}
+		最后遍历输出dp中元素的最大值即为LCS值
+	\end{algorithm}
+\end{solution}
+
+\item 设计高效算法求序列中出现次数大于$n/4$的所有元素
+\begin{solution}
+	具体思路和计算次数大于$n/2$的元素相同，因为出现次数大于$n/4$的所有元素最多可能有三个，那么每次删除四个元素，出现次数大于$n/4$的元素出现次数仍然大于$（n-4）/4$。这里构造三个可能的选项，然后如果新的数在三个选项中，那么该选项加一，否则所有选项均要减一，如果出现了为0的选项，将会删除掉它（用新的元素替换）。时间复杂度为$\mathcal{O}(n)$
+	\begin{algorithm}
+		\caption{findMajorityOf4(array X)}
+		\KwIn{X（一个大小为n的正数序列）}
+		\KwOut{Majority[3]如果不存在则为-1}
+		C[1]=X[1];
+		C[2]=X[2];
+		M[1]=1;
+		M[2]=1;
+		pos=2;
+		counter=0;\\
+		\While{C[2]=C[1]}{
+			pos=pos+1;\\
+			C[2]=X[pos];\\
+			M[1]=M[1]+1;
+		}
+		\While{C[3]=C[1] or C[3]=C[2]}{
+			pos=pos+1;\\
+			\If{C[3]=C[1]}{
+				C[3]=X[pos];\\
+				M[1]=M[1]+1;\\
+			}\Else{
+				C[3]=X[pos];\\
+				M[2]=M[2]+1;
+			}
+		}
+		\For{pos in pos $\to$ n}{
+			\If{X[pos]=C[1]}{
+				M[1]=M[1]+1;\\
+			}\ElseIf{X[pos]=C[2]}{
+				M[2]=M[2]+1;\\
+			}\ElseIf{X[pos]=C[3]}{
+				M[3]=M[3]+1;
+			}
+			\Else{
+				M[1]=M[1]-1;\\
+				M[2]=M[2]-1;\\
+				M[3]=M[3]-1;\\
+				\If{M[1]=0}{
+					C[1]=X[pos];
+					M[1]=1;	
+				}\ElseIf{M[2]=0}{
+					C[2]=X[pos];
+					M[2]=1;	
+				}\ElseIf{M[3]=0}{
+					C[3]=X[pos];\\
+					M[3]=1;	
+				}
+			}
+		}
+		M[1]=M[2]=M[3]=0;\\
+		\For{i in $1\to n$}{
+			\If{X[i]=C[1]}{
+				M[1]=M[1]+1;
+			}\ElseIf{X[i]=C[1]}{
+				M[2]=M[2]+1;
+			}\ElseIf{X[i]=C[1]}{
+				M[3]=M[3]+1;
+			}
+		}
+		\If{M[1]<n/4}{M[1]=-1;}
+		\If{M[2]<n/4}{M[2]=-1;}
+		\If{M[3]<n/4}{M[3]=-1;}
+	\end{algorithm}
+\end{solution}
+
+\item 对于任意给定的4个$1\to 10$之间的整数（可以相同），判断是否可以通过整数四则运算得到24
+\begin{solution}
+	首先考虑将运算简化。可以发现，一个包含四个数的有序数列的运算只有两种基本结构（2,2)和（3,1），即两两先进行运算再对两个结果进行运算，或者三个数的运算得结果与另一个数运算。这两种情况有重合的部分，但是这里不做考虑。同时，由于四个数可以交换顺序，但是两个参与运算的数之间的数的顺序是没有意义的，那么（2,2）可以有$4\choose 2 $$/2 = 3$种，而（3,1）可以有$4\choose 1$$\times$$3\choose 1$。而每个运算符会有4种选择，共$4^3=64$种。即最坏情况下，该算法将检验960种子情况。
+	\begin{algorithm}
+		\caption{Cal(a,b,c,d)}
+		\KwIn{输入参与运算的变量（2到4个）}
+		\KwOut{输入变量数目为2或3时，经过运算的结果的集合；输入数量为4时，输出可行与否}
+		\If{输入参数数量为4}{
+			 \If{$24\in Cal(Cal(a,b,c),d)$}{return $True$;}
+			 \If{$24\in Cal(Cal(a,b,d),c)$}{return $True$;}
+			 \If{$24\in Cal(Cal(a,b),Cal(c,d))$}{return $True$;}
+			 按照上面的描述，将各种有序数列及其运算写出。
+		}
+		\ElseIf{输入参数数量为3}{
+			 return $\{Cal(Cal(a,b),c),\ldots ,Cal(Cal(a,c),b)\}$;
+			 
+		}\Else{
+			 return $\{a+b,a-b,b-a,a*b,a/b,b/a\}$;	 
+		}
+	\end{algorithm}
+\end{solution}
+
+\item 如果序列中存在众元，设计分治法找出众元（这里的众元为出现次数超过n/2的元素）。
+\begin{solution}
+	如果众元存在，那么经过排序后，它一定为序列的中数，那么这里就是要用分治法去寻找中位数。我们首先将数组拆分成两部分，将他们分别排序，然后对这两个有序的子序列利用分治法求解中位数。
+	\begin{algorithm}
+		\caption{quickSort(A,low,high)}
+		\KwIn{序列A}
+		\KwOut{排序后的序列}
+		\If{$low\ge high$}{
+			return;
+		}
+		first=low;\\
+		last=high;\\
+		key=a[first];\\
+		\While{$first<last$}{
+			\While{$A[last]\geq key$ and $first<last$}{last=last-1;}
+			A[first]=A[last];\\
+			\While{$A[first]\leq key$ and $first<last$}{first=first+1;}
+			A[last]=A[first];\\
+		}
+		A[first]=key;\\
+		quickSort(A,low,first-1);\\
+		quickSort(A,first+1,high);
+	\end{algorithm}
+\end{solution}
+
+\end{enumerate}
+
+%========================================================================
+\end{document}
