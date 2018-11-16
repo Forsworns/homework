@@ -1,0 +1,9 @@
+.\objects\exep1.o: ..\1.1\exep1.c
+.\objects\exep1.o: E:\KEIL\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\exep1.o: E:\KEIL\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\exep1.o: E:\ti\inc\hw_memmap.h
+.\objects\exep1.o: E:\ti\driverlib\debug.h
+.\objects\exep1.o: E:\ti\driverlib\gpio.h
+.\objects\exep1.o: E:\ti\inc\hw_types.h
+.\objects\exep1.o: E:\ti\driverlib\pin_map.h
+.\objects\exep1.o: E:\ti\driverlib\sysctl.h

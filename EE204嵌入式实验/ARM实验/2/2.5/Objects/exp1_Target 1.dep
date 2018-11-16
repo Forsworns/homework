@@ -1,0 +1,27 @@
+Dependencies for Project 'exp1', Target 'Target 1': (DO NOT MODIFY !)
+F (.\exp2-1.c)(0x5B195806)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I E:\ti\inc -I E:\ti\driverlib-IE:\文档\大二下\学期\嵌入式\ARM实验\2\2.5\RTE\_Target_1-IE:\KEIL\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-IE:\KEIL\ARM\CMSIS\Include-D__UVISION_VERSION="522" -D_RTE_ -DTM4C1294NCPDT -DPART_TM4C1294NCPDT-o .\objects\exp2-1.o --omf_browse .\objects\exp2-1.crf --depend .\objects\exp2-1.d)
+I (E:\KEIL\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (E:\KEIL\ARM\ARMCC\include\stdbool.h)(0x57F606B8)
+I (E:\ti\inc\hw_memmap.h)(0x5AFD012F)
+I (E:\ti\driverlib\debug.h)(0x5AFD0129)
+I (E:\ti\driverlib\gpio.h)(0x5AFD0129)
+I (E:\ti\inc\hw_i2c.h)(0x5AFD012F)
+I (E:\ti\inc\hw_types.h)(0x5AFD012F)
+I (E:\ti\inc\hw_gpio.h)(0x5AFD012F)
+I (E:\ti\inc\hw_ints.h)(0x5AFD012F)
+I (E:\ti\driverlib\i2c.h)(0x5AFD0129)
+I (E:\ti\driverlib\pin_map.h)(0x5AFD0129)
+I (E:\ti\driverlib\sysctl.h)(0x5AFD0129)
+I (E:\ti\driverlib\systick.h)(0x5AFD0129)
+I (E:\ti\driverlib\interrupt.h)(0x5AFD0129)
+F (E:\ti\driverlib\rvmdk\driverlib.lib)(0x5AFD0129)()
+F (RTE\Device\TM4C1294NCPDT\startup_TM4C129.s)(0x51BFAA8A)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -IE:\文档\大二下\学期\嵌入式\ARM实验\2\2.5\RTE\_Target_1-IE:\KEIL\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-IE:\KEIL\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "TM4C1294NCPDT SETA 1"--list .\listings\startup_tm4c129.lst --xref -o .\objects\startup_tm4c129.o --depend .\objects\startup_tm4c129.d)
+F (RTE\Device\TM4C1294NCPDT\system_TM4C129.c)(0x525357C4)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I E:\ti\inc -I E:\ti\driverlib-IE:\文档\大二下\学期\嵌入式\ARM实验\2\2.5\RTE\_Target_1-IE:\KEIL\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129-IE:\KEIL\ARM\CMSIS\Include-D__UVISION_VERSION="522" -D_RTE_ -DTM4C1294NCPDT -DPART_TM4C1294NCPDT-o .\objects\system_tm4c129.o --omf_browse .\objects\system_tm4c129.crf --depend .\objects\system_tm4c129.d)
+I (E:\KEIL\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (E:\KEIL\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129\TM4C129.h)(0x530E9E96)
+I (E:\KEIL\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129\TM4C1294NCPDT.h)(0x530E9E96)
+I (E:\KEIL\ARM\CMSIS\Include\core_cm4.h)(0x559CDD8A)
+I (E:\KEIL\ARM\CMSIS\Include\core_cmInstr.h)(0x559CDD8A)
+I (E:\KEIL\ARM\CMSIS\Include\core_cmFunc.h)(0x559CDD8A)
+I (E:\KEIL\ARM\CMSIS\Include\core_cm4_simd.h)(0x559CDD8A)
+I (E:\KEIL\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129\system_TM4C129.h)(0x51BFAA8A)
