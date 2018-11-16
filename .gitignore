@@ -16,7 +16,8 @@ Debug/
 *.aux
 *.log
 *.out
-*.pdf
 *.gz
 
+
+*.pdf
 !/SE305数据库技术/
