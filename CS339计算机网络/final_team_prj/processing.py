@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 import matplotlib
 import os
 import json
+import random
 
 
-def processData(file_name, show_figure=False, store_txt=False):
-    # 处理读入
+def processData(file_name, show_figure=False):
+	# 处理读入
 	f = open(file_name)
 	four_tuple = [0, 0, 0, 0]
 	tuple_in_line = []
@@ -41,17 +42,6 @@ def processData(file_name, show_figure=False, store_txt=False):
 	data = file_name.split("\\")[-1]
 	dataset = file_name.split("\\")[-2]
 
-	# 暂存，后续移除
-	if(store_txt):
-		os.chdir(dataset)
-		if not os.path.exists('tuple'):
-			os.mkdir('tuple')
-		with open("tuple\{}.txt".format(data), 'w') as f:
-			for item in tuple_in_line:
-				[f.write(str(unit)+' ') for unit in item]
-				f.write('\n')
-		os.chdir('..')
-
 	time = []
 	length = []
 	for x in tuple_in_line:
@@ -66,11 +56,11 @@ def processData(file_name, show_figure=False, store_txt=False):
 	tl_slice = []
 	if('A' in data):
 		tl_slice = split_time_length(
-			length, standardA, deviationA, time, use_filter=True, threshold=2)
+			length, standardA, deviationA, time, use_filter=True, threshold=3)
 		# [print(str(tl[0])+' '+str(tl[1])) for tl in tl_slice]
 	else:
 		tl_slice = split_time_length(
-			length, standardG, deviationG, time, use_filter=True, threshold=2)
+			length, standardG, deviationG, time, use_filter=True, threshold=3)
 		# [print(str(tl[0])+' '+str(tl[1])) for tl in tl_slice]
 
 	# 可以与图像比较
@@ -118,7 +108,7 @@ def processData(file_name, show_figure=False, store_txt=False):
 			plt.ylabel("length")
 			plt.xlabel("time")
 			plt.show()
-	
+
 	transform2np(dataset, data, tl_output)
 
 
@@ -196,4 +186,41 @@ if __name__ == "__main__":
 		dataset_path = os.path.join(dataset_dir, item)
 		for file in os.listdir(dataset_path):
 			file_name = os.path.join(dataset_path, file)
-			processData(file_name,True)
+			processData(file_name)
+
+	# 整理,长度统一 os.getcwd() == /output
+	output_staticsA = []
+	output_staticsG = []
+	lengthA = 100
+	lengthG = 100
+	for sub_dir in os.listdir(os.getcwd()):
+		if 'json' in sub_dir:
+			continue
+		y = sub_dir[0]
+		for file in os.listdir(os.path.join(sub_dir, "json")):
+			type_id = file.split('.')[0][-1]
+			with open(sub_dir+"\\json\\"+file, 'r') as f:
+				file_content = f.read()
+				json_content = json.loads(file_content)
+				for item in json_content:
+					if(type_id == 'G'):
+						if(len(item) == 2):
+							print(item)
+						lengthG = min(lengthG, len(item))
+						output_staticsG.append([item, y])
+					else:
+						lengthA = min(lengthA, len(item))
+						output_staticsA.append([item, y])
+	print(lengthA)
+	print(lengthG)
+	for item in output_staticsA:
+		item[0] = item[0][:lengthA]
+	for item in output_staticsG:
+		item[0] = item[0][:lengthG]
+
+	json_output_staticsA = json.dumps(output_staticsA)
+	json_output_staticsG = json.dumps(output_staticsG)
+	with open('A.json', 'w') as f:
+		f.write(json_output_staticsA)
+	with open('G.json', 'w') as f:
+		f.write(json_output_staticsG)
