@@ -7,7 +7,7 @@ import json
 import random
 
 
-def processData(file_name, show_figure=False):
+def processData(file_name, show_figure=False,interpolation=False):
 	# 处理读入
 	f = open(file_name)
 	four_tuple = [0, 0, 0, 0]
@@ -87,6 +87,19 @@ def processData(file_name, show_figure=False):
 					break
 				tl_output.append([])
 
+		# 对G做插值
+		if(interpolation and 'G' in data):
+			for item in tl_output:
+				times = len(item)
+				for i in range(0, times-1):
+					item.append(
+						[(item[i][0]+item[i+1][0])/2,
+						 [(item[i][1]+item[i+1][1])/2,
+						  (item[i][2]+item[i+1][2])/2,
+						  (item[i][3] + item[i+1][3])/2
+						  ]])
+				item.sort(key=lambda x: x[0])
+
 		json_output = json.dumps(tl_output)
 		os.chdir(dataset)
 		if not os.path.exists('json'):
@@ -112,6 +125,18 @@ def processData(file_name, show_figure=False):
 	transform2np(dataset, data, tl_output)
 
 
+def is_interval(standard, deviation, message, idx, window=1):
+	# 向window内的点看是否接近标准值
+	sum = 0
+	for i in range(idx, idx + window):
+		if i < len(message):
+			if(abs(message[i]-standard) < deviation):
+				sum += -1
+			else:
+				sum += 1
+	return sum < 0
+
+
 def split_time_length(length, standard, deviation, time=[], **filter_para):
 	# tl_slice = [(start,end)]
 	# set parameter
@@ -135,12 +160,14 @@ def split_time_length(length, standard, deviation, time=[], **filter_para):
 	end = 0
 	for idx, (t, l) in enumerate(zip(time, length)):
 		# print('{} {}'.format(idx, l))  # A差不多300十组,G差不多
-		if(abs(l-standard) < deviation):
+		if(is_interval(standard, deviation, length, idx, window=2)):
 			if(interval_flag):
+				# 遇到了interval，但是本身在interval内，不断更新起始和终结
 				start = idx
 				end = idx
 				continue
 			else:
+				# 遇到了interval，但是刚刚不是在interval内，更新终结
 				end = idx
 				interval_flag = True
 				if(use_time):
@@ -153,6 +180,7 @@ def split_time_length(length, standard, deviation, time=[], **filter_para):
 						tl_slice.append((start, end))
 				start = idx
 		else:
+			# 没有遇到interval
 			interval_flag = False
 	return tl_slice
 
@@ -204,15 +232,13 @@ if __name__ == "__main__":
 				json_content = json.loads(file_content)
 				for item in json_content:
 					if(type_id == 'G'):
-						if(len(item) == 2):
-							print(item)
 						lengthG = min(lengthG, len(item))
 						output_staticsG.append([item, y])
 					else:
 						lengthA = min(lengthA, len(item))
 						output_staticsA.append([item, y])
-	print(lengthA)
-	print(lengthG)
+	print("加速度的序列长度{}".format(lengthA))
+	print("角加速度的序列长度{}".format(lengthG))
 	for item in output_staticsA:
 		item[0] = item[0][:lengthA]
 	for item in output_staticsG:
