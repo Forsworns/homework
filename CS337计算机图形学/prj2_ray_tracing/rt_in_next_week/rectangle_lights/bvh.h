@@ -57,7 +57,7 @@ namespace yph {
 		hitable *right;
 	public:
 		bvhNode() {}
-		bvhNode(hitable **list,int n, float time0,float time1) {}
+		bvhNode(hitable **list, int n, float time0, float time1);
 		virtual bool hit(const ray<float> &r,float tMin,float tMax,hitRecord &rec ) const;
 		virtual bool boundingBox(float tMin,float tMax,aabb &box) const;
 	};

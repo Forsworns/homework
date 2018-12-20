@@ -2,7 +2,9 @@
 #ifndef MATERIAL
 #define MATERIAL
 #include "ray.h"
+#include "vec3.h"
 #include "texture.h"
+#include "hitable.h"
 
 namespace yph {
 	struct hitRecord;
@@ -78,7 +80,7 @@ namespace yph {
 		}
 		virtual bool scatter(const ray<float>& rIn, const hitRecord& rec, vec3f& attenuation, ray<float>& scattered)const {
 			vec3f direction = reflect(rIn.getDirection(),rec.normal);
-			scattered = ray<float>(rec.p,direction + fuzz * randomInUnitSphere());
+			scattered = ray<float>(rec.p, direction + fuzz * randomInUnitSphere());
 			attenuation = albedo;
 			return dot(direction,rec.normal)>0;
 		}
@@ -135,6 +137,18 @@ namespace yph {
 		diffuseLight(texture *t) : emit(t){}
 		virtual bool scatter(const ray<float> &r, const hitRecord &rec, vec3f &attenuation, ray<float> &scattered) const { return false; }
 		virtual vec3f emitted(float u, float v, const vec3f &p) const { return emit->value(u, v, p); }
+	};
+
+	class isotropic : public material {
+	private:
+		texture *albedo;
+	public:
+		isotropic(texture *a) :albedo(a) {}
+		virtual bool scatter(const ray<float> &r, const hitRecord &rec, vec3f &attenuation, ray<float> &scattered) const { 
+			scattered = ray<float>(rec.p,randomInUnitSphere()); // Ëæ»ú·¢É¢
+			attenuation = albedo->value(rec.u, rec.v, rec.p);
+			return true; 
+		}
 	};
 }
 

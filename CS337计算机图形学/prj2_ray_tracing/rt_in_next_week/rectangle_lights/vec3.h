@@ -52,7 +52,7 @@ namespace yph {
 		template<class S>
 		friend inline std::istream& operator>>(std::istream &is, vec3<S> &vec);
 		template<class S>
-		friend inline std::ostream& operator<<(std::ostream &os, vec3<S> &vec);
+		friend inline std::ostream& operator<<(std::ostream &os, const vec3<S> &vec);
 	};
 
 	typedef vec3<float> vec3f;
@@ -65,7 +65,7 @@ namespace yph {
 	}
 
 	template<class T>
-	inline std::ostream& operator<<(std::ostream &os, vec3<T> &vec) {
+	inline std::ostream& operator<<(std::ostream &os, const vec3<T> &vec) {
 		os << vec.e[0] << " " << vec.e[1] << " " << vec.e[2];
 		return os;
 	}
