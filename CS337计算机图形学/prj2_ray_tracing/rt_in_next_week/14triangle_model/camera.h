@@ -23,7 +23,7 @@ namespace yph {
 		float lensRadius;
 	public:
 		camera(vec3f lookfrom,vec3f lookat,vec3f vup, float vfov,float aspect,float aperture, float focusDist) { 
-			// vfov是从上向下看的角度
+			// vfov是视角
 			// aperture是光圈参数
 			// aspect为图像长宽比
 			float theta = vfov * PI / 180;

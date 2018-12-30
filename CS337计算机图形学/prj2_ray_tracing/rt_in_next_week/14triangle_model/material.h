@@ -14,7 +14,7 @@ namespace yph {
 		vec3f randomInUnitSphere() const {	//随机取点于单位球，球为照射到的点的单位法向量作为半径确定的单位圆
 			vec3f p;
 			do {
-				p = vec3f((rand() % 10) / float(10), (rand() % 10) / float(10), (rand() % 10) / float(10));
+				p = vec3f((rand() % 10) / float(10), (rand() % 10) / float(10), (rand() % 10) / float(10)) * 2-vec3f(1,1,1);
 				//从包围着球的cube中选取一个点，如果在球内则返回该点
 			} while (p.squaredLength() >= 1.0f);
 			return p;

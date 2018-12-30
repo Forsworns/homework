@@ -5,10 +5,12 @@
 #include "hitable.h"
 #include <fstream>
 #include <algorithm>
+#include <vector>
+#include <fstream>
 
 namespace yph {
 	class triangle : public hitable {
-	private:
+	public:
 		vec3f points[3];
 		vec3f normal; // 面的法向量
 		material *materialPtr;
@@ -25,6 +27,13 @@ namespace yph {
 			points[1] = p[1];
 			points[2] = p[2];
 			normal = cross(points[1] - points[0],points[1] - points[0]); // 直接计算法向量
+		}
+
+		triangle(vec3f p0, vec3f p1, vec3f p2, material *mat) : materialPtr(mat) {
+			points[0] = p0;
+			points[1] = p1;
+			points[2] = p2;
+			normal = cross(points[1] - points[0], points[1] - points[0]); // 直接计算法向量
 		}
 		
 		// 计算光线和物体碰撞
@@ -44,8 +53,9 @@ namespace yph {
 		}
 	};
 	
-	// the algorithm we used in AG hw, adapted from: https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+	// 采用大作业AG中的同款光线——三角形相交检测算法, 引用自: https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 	bool triangle::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+		// 存在问题，不能相交就直接取了，有遮挡关系
 		//V1,V2,V3 denote the points
 		//Find vectors for two edges sharing V1
 		vec3f e1 = points[1] - points[0];
@@ -80,7 +90,7 @@ namespace yph {
 
 		float t = dot(e2, Q) * inv_det;
 
-		if (t > T_MIN)
+		if (t > tMin && t < tMax)
 		{ // ray intersection
 			aabb box;
 			boundingBox(0, 0, box);
@@ -98,17 +108,41 @@ namespace yph {
 		return false;
 	}
 	
-	// 把mesh model文件读入，存入一个三角形列表中，然后
-	/*int loadMeshModel(std::string fileName, triangle *triList) {
+	// 把mesh model文件读入，存入一个三角形列表中
+	void loadMeshModel(std::string fileName, material* materialPtr, triangle** triList) {
 		std::ifstream fin(fileName);
 		std::vector<triangle> triVector;
 		std::vector<vec3f> vertices;
-		
-		
-		
-		triList = &triVector[0];
-		return triVector.size();
-	}*/
+		char tmpchar[100];
+		int tmpnum;
+		int nVer, nFace;
+
+		fin >> tmpchar;
+		fin >> nVer >> nFace >> tmpnum;
+		// 读入点集
+		for (int i = 0; i < nVer; ++i) {
+			vec3f vertex;
+			fin >> vertex;
+			vertices.push_back(vertex);
+		}
+		// 建立三角面信息
+		for (int i = 0; i < nFace; ++i) {
+			vec3<int> face;
+			fin >> tmpnum >> face;
+			triList[i] = new triangle(vertices[face.getX()], vertices[face.getY()], vertices[face.getZ()], materialPtr);
+		}
+		fin.close();
+	}
+
+	int countTriNum(std::string modelFile) {
+		std::ifstream fin(modelFile);
+		char tmpchar[100];
+		int tmpnum, triNum;
+		fin >> tmpchar;
+		fin >> tmpnum >> triNum >> tmpnum;
+		fin.close();
+		return triNum;
+	}
 	
 }
 
