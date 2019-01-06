@@ -14,8 +14,8 @@ namespace yph {
 	public:
 		aabb() {}
 		aabb(const vec3f& a,const vec3f&b) :_min(a),_max(b){}
-		vec3f getMin() { return _min; }
-		vec3f getMax() { return _max; }
+		vec3f getMin() const { return _min; }
+		vec3f getMax() const { return _max; }
 		bool hit(ray<float> r,float tmin,float tmax) const {
 			//在三个维度判断光线和包围盒的交点，然后计算overlap部分是否合法
 			// 一个trick就是有NAN的判断一定是false，所以不用单另处理NAN

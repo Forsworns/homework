@@ -13,14 +13,27 @@ namespace yph{
 			listSize = size;
 			list = l;
 		}
-		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		void push_back(hitable *item) {
+			hitable **tempList = new hitable*[listSize++];
+			for (int i = 0; i < listSize - 1; ++i) {
+				tempList[i] = list[i];
+			}
+			tempList[listSize - 1] = item;
+			list = new hitable*[listSize];
+			for (int i = 0; i < listSize; ++i) {
+				list[i] = tempList[i];
+				delete tempList[i];
+			}
+			delete tempList;
+		}
+		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0,float t1,aabb& box) const;
 	};
-	bool hitableList::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool hitableList::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		hitRecord tempRecord;
 		bool hitAnything = false;
 		float closestHitted = tMax;
-		for (int i = 0; i < listSize; ++i) {	// 遍历找到最靠前的，让它被照射到
+		for (int i = 0; i < listSize; ++i) {			// 遍历找到最靠前的，让它被照射到
 			if (list[i]->hit(r,tMin, closestHitted, tempRecord)) {
 				hitAnything = true;
 				closestHitted = tempRecord.t;			// 这里不用比较大小，因为已经更改了最大的检测边界，若还碰撞到t一定是更小的

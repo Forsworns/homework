@@ -14,13 +14,13 @@ namespace yph {
 	public:
 		xyRectangle() {}
 		xyRectangle(float _x0, float _x1, float _y0, float _y1, float _k, material *mat) :x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k), materialPtr(mat) {}
-		virtual bool hit(const ray<float>& r, float t0,float t1, hitRecord &rec) const;
+		virtual bool hit(ray<float>& r, float t0,float t1, hitRecord &rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb &box) const { 
 			box = aabb(vec3f(x0, y0, k - HALF_THICKNESS), vec3f(x1, y1, k + HALF_THICKNESS));
 			return true;
 		}
 	};
-	bool xyRectangle::hit(const ray<float>& r, float t0, float t1, hitRecord &rec) const {
+	bool xyRectangle::hit(ray<float>& r, float t0, float t1, hitRecord &rec) const {
 		float t = (k - r.getOrigin().getZ())/r.getDirection().getZ();
 		//std::cout << "与xy长方体交点" << t << "光线起点" << r.getOrigin() << "方向"<< r.getDirection()<< std::endl;
 		if (t<t0 || t>t1) { return false; }	// 交点光线方向t值超过限制
@@ -45,13 +45,13 @@ namespace yph {
 	public:
 		xzRectangle() {}
 		xzRectangle(float _x0, float _x1, float _z0, float _z1, float _k, material *mat) :x0(_x0), x1(_x1), z0(_z0), z1(_z1), k(_k), materialPtr(mat) {}
-		virtual bool hit(const ray<float>& r, float t0, float t1, hitRecord &rec) const;
+		virtual bool hit(ray<float>& r, float t0, float t1, hitRecord &rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb &box) const {
 			box = aabb(vec3f(x0, k - HALF_THICKNESS, z0), vec3f(x1, k + HALF_THICKNESS, z1));
 			return true;
 		}
 	};
-	bool xzRectangle::hit(const ray<float>& r, float t0, float t1, hitRecord &rec) const {
+	bool xzRectangle::hit(ray<float>& r, float t0, float t1, hitRecord &rec) const {
 		float t = (k - r.getOrigin().getY()) / r.getDirection().getY();
 		if (t<t0 || t>t1) { return false; }	// 交点光线方向t值超过限制
 		float x = r.getOrigin().getX() + t * r.getDirection().getX();
@@ -74,13 +74,13 @@ namespace yph {
 	public:
 		yzRectangle() {}
 		yzRectangle(float _y0, float _y1, float _z0, float _z1, float _k, material *mat) :y0(_y0), y1(_y1), z0(_z0), z1(_z1), k(_k), materialPtr(mat) {}
-		virtual bool hit(const ray<float>& r, float t0, float t1, hitRecord &rec) const;
+		virtual bool hit(ray<float>& r, float t0, float t1, hitRecord &rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb &box) const {
 			box = aabb(vec3f(k - HALF_THICKNESS, y0, z0), vec3f(k + HALF_THICKNESS, y1, z1));
 			return true;
 		}
 	};
-	bool yzRectangle::hit(const ray<float>& r, float t0, float t1, hitRecord &rec) const {
+	bool yzRectangle::hit(ray<float>& r, float t0, float t1, hitRecord &rec) const {
 		float t = (k - r.getOrigin().getX()) / r.getDirection().getX();
 		if (t<t0 || t>t1) { return false; }	// 交点光线方向t值超过限制
 		float y = r.getOrigin().getY() + t * r.getDirection().getY();
@@ -103,7 +103,7 @@ namespace yph {
 	public:
 		box() {}
 		box(const vec3f& p0, const vec3f& p1, material* mat);
-		virtual bool hit(const ray<float>& r, float t0, float t1, hitRecord &rec) const {
+		virtual bool hit(ray<float>& r, float t0, float t1, hitRecord &rec) const {
 			return boxPtr->hit(r, t0, t1, rec);
 		}
 		virtual bool boundingBox(float t0, float t1, aabb &box) const {

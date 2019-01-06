@@ -58,7 +58,7 @@ namespace yph {
 	public:
 		bvhNode() {}
 		bvhNode(hitable **list, int n, float time0, float time1);
-		virtual bool hit(const ray<float> &r,float tMin,float tMax,hitRecord &rec ) const;
+		virtual bool hit(ray<float> &r,float tMin,float tMax,hitRecord &rec ) const;
 		virtual bool boundingBox(float tMin,float tMax,aabb &box) const;
 	};
 	bvhNode::bvhNode(hitable **list, int n, float time0, float time1) {
@@ -90,7 +90,7 @@ namespace yph {
 			_box = mergeAabb(boxLeft, boxRight);
 		}
 	}
-	bool bvhNode::hit(const ray<float> &r, float tMin, float tMax, hitRecord &rec) const {
+	bool bvhNode::hit(ray<float> &r, float tMin, float tMax, hitRecord &rec) const {
 		if (_box.hit(r, tMin, tMax)) {
 			hitRecord leftRec, rightRec;
 			bool hitLeft = left->hit(r,tMin,tMax,leftRec);

@@ -19,12 +19,12 @@ namespace yph {
 	public:
 		sphere() {}
 		sphere(vec3f cen, float r, material* mPtr) :center(cen), radius(r),materialPtr(mPtr) {}
-		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb& box) const;
 		float getRadius() const { return radius; }
 		vec3f getCenter() const { return center; }
 	};
-	bool sphere::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool sphere::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		// 这里 tmin和tmax限定了求取交点的范围，不仅可以淘汰在视野背面的（如设tmin>0），之后在物体层叠的情况下可以找出最靠前的一个
 		vec3f oc = r.getOrigin() - center;
 		float a = dot(r.getDirection(), r.getDirection());

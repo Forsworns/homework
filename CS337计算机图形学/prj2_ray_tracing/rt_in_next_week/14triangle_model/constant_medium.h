@@ -15,13 +15,13 @@ namespace yph {
 		constantMedium(hitable *h, float d, texture *t) :boundary(h), density(d) {
 			materialPtr = new isotropic(t);
 		}
-		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb& box) const {
 			return boundary->boundingBox(t0, t1, box);
 		}
 	};
 
-	bool constantMedium::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool constantMedium::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		hitRecord rec1, rec2;
 		if (boundary->hit(r, -T_MAX, T_MAX, rec1)) {
 			if (boundary->hit(r, rec1.t + T_MIN, T_MAX, rec2)) {
