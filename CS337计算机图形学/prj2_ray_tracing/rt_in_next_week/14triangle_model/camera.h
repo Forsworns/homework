@@ -49,7 +49,7 @@ namespace yph {
 		}
 	};
 
-	camera *cameraInit(const aabb& sceneBox, const int &nx, const int &ny, float vfov = 40.0) {
+	camera *cameraInit(const aabb& sceneBox, const int &scene, const int &nx, const int &ny, float vfov) {
 		vec3f lowerLeft = sceneBox.getMin();
 		vec3f upperRight = sceneBox.getMax();
 		vec3f modelSize = upperRight - lowerLeft;
@@ -61,7 +61,26 @@ namespace yph {
 		std::cout << "middle " << modelMid << std::endl;
 
 		vec3f lookat = modelMid;
-		vec3f lookfrom = lookat + vec3f(1.0, 1.0, 1.0) * modelSize.length();
+		vec3f lookfrom;
+
+		switch (scene) {
+		case 1: {
+			lookfrom = vec3f(8,50,8);					// ball scene1
+			break;
+		}
+		case 2: {
+			lookfrom = lookat + vec3f(1.0, 1.0, 1.0) * 100; // simple light scene2
+			break;
+		}
+		case 3: {
+			lookfrom = vec3f(278, 278, -800); // conell box scene3
+			break;
+		}
+		default: {
+			lookfrom = lookat + vec3f(1.0, 1.0, 1.0) * modelSize.length(); // model scene4
+			break;
+		}
+		}
 
 		float distToFocus = 10.0;
 		float aperture = 0.0;

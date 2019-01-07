@@ -9,7 +9,7 @@ namespace yph {
 	class material;
 
 	const float T_MIN = 0.001f;
-	const float T_MAX = 1000000000.0f;
+	const float T_MAX = 65535.0f;
 	struct hitRecord {
 		float t;	// 产生接触时的光路上的t值
 		float u, v; // 读入图片后图片上的相对坐标
@@ -22,7 +22,7 @@ namespace yph {
 	class hitable {
 	public:
 		// 计算光线和物体碰撞
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const = 0;
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const = 0;
 		// 获取aabb包围盒
 		virtual bool boundingBox(float t0, float t1, aabb& box) const = 0;
 	};
@@ -34,7 +34,7 @@ namespace yph {
 	public:
 		flipNormals(hitable *ptr) :hitablePtr(ptr) {}
 		// 计算光线和物体碰撞
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 			if (hitablePtr->hit(r, tMin, tMax, rec)) {
 				rec.normal = -rec.normal;
 				return true;
@@ -57,7 +57,7 @@ namespace yph {
 	public:
 		translation(hitable *ptr, const vec3f& displacement) :hitablePtr(ptr), offset(displacement) {}
 		// 计算光线和物体碰撞
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 			ray<float> rMoved(r.getOrigin() - offset, r.getDirection());							// 移动平移后位置的光线到平移前处判断相交情况，之后再将碰撞点加上这样一个偏移
 			if (hitablePtr->hit(rMoved, tMin, tMax, rec)) {
 				rec.p += offset;
@@ -89,7 +89,7 @@ namespace yph {
 		aabb _box;
 	public:
 		rotateY(hitable *p, float angle);
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb& box) const {
 			box = _box;
 			return hasbox;
@@ -127,7 +127,7 @@ namespace yph {
 		_box = aabb(minPos, maxPos);
 	}
 
-	bool rotateY::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool rotateY::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		// 反着变换光线，检测是否与当前的物体相交，之后再变换碰撞点
 		vec3f origin = r.getOrigin();
 		vec3f direction = r.getDirection();
@@ -163,7 +163,7 @@ namespace yph {
 		aabb _box;
 	public:
 		rotateZ(hitable *p, float angle);
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb& box) const {
 			box = _box;
 			return hasbox;
@@ -201,7 +201,7 @@ namespace yph {
 		_box = aabb(minPos, maxPos);
 	}
 
-	bool rotateZ::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool rotateZ::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		// 反着变换光线，检测是否与当前的物体相交，之后再变换碰撞点
 		vec3f origin = r.getOrigin();
 		vec3f direction = r.getDirection();
@@ -237,7 +237,7 @@ namespace yph {
 		aabb _box;
 	public:
 		rotateX(hitable *p, float angle);
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0, float t1, aabb& box) const {
 			box = _box;
 			return hasbox;
@@ -275,7 +275,7 @@ namespace yph {
 		_box = aabb(minPos, maxPos);
 	}
 
-	bool rotateX::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool rotateX::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		// 反着变换光线，检测是否与当前的物体相交，之后再变换碰撞点
 		vec3f origin = r.getOrigin();
 		vec3f direction = r.getDirection();

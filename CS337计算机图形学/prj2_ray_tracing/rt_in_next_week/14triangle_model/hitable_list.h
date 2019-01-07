@@ -22,14 +22,12 @@ namespace yph{
 			list = new hitable*[listSize];
 			for (int i = 0; i < listSize; ++i) {
 				list[i] = tempList[i];
-				delete tempList[i];
 			}
-			delete tempList;
 		}
-		virtual bool hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
+		virtual bool hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const;
 		virtual bool boundingBox(float t0,float t1,aabb& box) const;
 	};
-	bool hitableList::hit(ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
+	bool hitableList::hit(const ray<float>& r, float tMin, float tMax, hitRecord& rec) const {
 		hitRecord tempRecord;
 		bool hitAnything = false;
 		float closestHitted = tMax;
