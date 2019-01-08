@@ -1,3 +1,3 @@
 - Private record of the ray tracing learning process.
 - Based on [Ray Tracing in One Weekend](https://github.com/petershirley/raytracinginoneweekend) and [Ray Tracing: The Next Week](https://github.com/petershirley/raytracingthenextweek)
-- Todo: Triangle mesh, Acceleration
+- Add: Triangle mesh and Cmd Parser
